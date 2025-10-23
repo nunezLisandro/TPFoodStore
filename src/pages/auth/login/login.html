@@ -3,14 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <title>Login</title>
+  <link rel="stylesheet" href="/src/style.css" />
+  <style>
+    #loginError { color: #d63031; margin: .5rem 0; display:none }
+    #loginError.visible { display:block }
+  </style>
 </head>
 <body>
-  <h1>Login</h1>
-  <form id="loginForm">
-    <input type="email" id="email" placeholder="Email" required />
-    <input type="password" id="password" placeholder="Contraseña" required />
-    <button type="submit">Ingresar</button>
-  </form>
+  <div id="app">
+    <h1>Login</h1>
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Contraseña" required />
+      <button type="submit">Ingresar</button>
+    </form>
+    <div id="loginError" role="alert"></div>
+    <p>¿No tenés cuenta? <a href="../register/register.html">Registrate</a></p>
+  </div>
   <script type="module" src="./login.ts"></script>
 </body>
 </html>
