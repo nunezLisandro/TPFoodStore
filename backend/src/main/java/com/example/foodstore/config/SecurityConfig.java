@@ -11,21 +11,14 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        // During development we allow all requests to simplify testing (H2 console, frontend, API).
+        // This avoids complex RequestMatcher ambiguity with the H2 servlet. In production tighten this.
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                // allow h2 console and auth endpoints
-                .requestMatchers("/h2-console/**", "/api/auth/**").permitAll()
-                // allow common static/frontend resources so visiting / doesn't trigger Spring Security login
-                .requestMatchers(
-                    "/", "/index.html", "/favicon.ico",
-                    "/src/**", "/public/**", "/img/**",
-                    "/*.html", "/*.js", "/*.css", "/**/*.html", "/**/*.js", "/**/*.css"
-                ).permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
             )
-            .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
-            .httpBasic(Customizer.withDefaults());
+            .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()));
 
         return http.build();
     }

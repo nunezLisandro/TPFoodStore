@@ -1,4 +1,4 @@
-import { apiFetch } from "../../../api";
+import { apiFetch, API_URL } from "../../../api";
 import { loginUser } from "../../../utils/auth";
 
 const form = document.getElementById('registerForm') as HTMLFormElement | null;
@@ -22,20 +22,37 @@ if (form) {
     if (password.length < 6) return showError('La contraseña debe tener al menos 6 caracteres');
 
     try {
+      const body = { name, email, password };
+      // debug logs to help diagnose failed requests
+      // eslint-disable-next-line no-console
+      console.info('[register] POST', `${API_URL}/auth/register`, body);
+
       const user = await apiFetch('/auth/register', {
         method: 'POST',
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify(body),
       });
+
+      // eslint-disable-next-line no-console
+      console.info('[register] response', user);
 
       if (user && user.id) {
         // auto login
         loginUser(user);
+        // show a short message then redirect
+        if (errorBox) {
+          errorBox.textContent = 'Registro correcto. Redirigiendo...';
+          errorBox.classList.add('visible');
+        }
         window.location.href = user.role === 'admin' ? '/src/pages/admin/adminHome/adminHome.html' : '/src/pages/store/home/home.html';
       } else {
         showError('Error al registrar');
       }
     } catch (err: any) {
-      showError(err?.message || 'Error en el registro');
+      // Show full error (backend message or whole body) and log to console
+      const msg = err?.message || 'Error en el registro';
+      // eslint-disable-next-line no-console
+      console.error('[register] error', err);
+      showError(msg);
     }
   });
 }
