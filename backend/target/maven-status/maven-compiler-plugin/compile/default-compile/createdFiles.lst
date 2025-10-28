@@ -1,9 +1,0 @@
-com\example\foodstore\FoodstoreBackendApplication.class
-com\example\foodstore\dto\UserDto.class
-com\example\foodstore\repository\UserRepository.class
-com\example\foodstore\controller\DebugController.class
-com\example\foodstore\config\SecurityConfig.class
-com\example\foodstore\service\UserService.class
-com\example\foodstore\model\User.class
-com\example\foodstore\config\DataInitializer.class
-com\example\foodstore\controller\AuthController.class
