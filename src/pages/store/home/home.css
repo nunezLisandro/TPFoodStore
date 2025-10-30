@@ -1,4 +1,4 @@
-/* === RESET Y FUENTES === */
+
 * {
   margin: 0;
   padding: 0;
@@ -14,7 +14,7 @@ body {
   flex-direction: column;
 }
 
-/* === HEADER === */
+
 header {
   display: flex;
   justify-content: space-between;
@@ -44,7 +44,7 @@ header {
   background: #fff3e0;
 }
 
-/* === LOADER === */
+
 #loader {
   display: none;
   margin: 2rem auto;
@@ -62,7 +62,7 @@ header {
   }
 }
 
-/* === CONTENEDOR DE PRODUCTOS === */
+
 #products {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -70,7 +70,7 @@ header {
   padding: 2rem;
 }
 
-/* === TARJETAS === */
+
 .card {
   background: white;
   border-radius: 16px;
@@ -120,7 +120,7 @@ header {
   background: #ff7b00;
 }
 
-/* === MENSAJES === */
+
 .empty, .error {
   text-align: center;
   margin-top: 2rem;

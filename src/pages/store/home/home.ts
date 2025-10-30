@@ -1,12 +1,14 @@
 import { apiFetch } from "../../../api";
+import { addToCart, getCartItemCount } from "../../../utils/cart";
 
-// --- ELEMENTOS ---
+
 const container = document.getElementById("products") as HTMLElement | null;
 const userInfo = document.getElementById("userInfo") as HTMLElement | null;
 const logoutBtn = document.getElementById("logoutBtn") as HTMLButtonElement | null;
 const loader = document.getElementById("loader") as HTMLElement | null;
+const cartCount = document.getElementById("cartCount") as HTMLElement | null;
 
-// --- VERIFICAR SESIÓN ---
+
 const userData = localStorage.getItem("user");
 if (!userData) {
   window.location.href = "/src/pages/auth/login/login.html";
@@ -15,7 +17,7 @@ if (!userData) {
   if (userInfo) userInfo.textContent = `👋 Hola, ${user.name || "usuario"}`;
 }
 
-// --- FUNCIÓN: CARGAR PRODUCTOS ---
+
 async function loadProducts() {
   if (!container) return;
 
@@ -36,11 +38,19 @@ async function loadProducts() {
           <img src="${p.imagen || "https://via.placeholder.com/200x150"}" alt="${p.nombre}">
           <h3>${p.nombre}</h3>
           <p class="price">$${p.precio}</p>
-          <button class="add-btn">Agregar</button>
+          <button class="add-btn" onclick="window.addToCart(${p.id})">Agregar</button>
         </div>
       `
       )
       .join("");
+
+    (window as any).addToCart = (productId: number) => {
+      const product = products.find((p: any) => p.id === productId);
+      if (product) {
+        addToCart(product);
+        updateCartCount();
+      }
+    };
   } catch (err: any) {
     container.innerHTML = `<p class="error">⚠️ Error cargando productos: ${err?.message || "Error desconocido"}</p>`;
   } finally {
@@ -48,7 +58,7 @@ async function loadProducts() {
   }
 }
 
-// --- FUNCIÓN: LOGOUT ---
+
 if (logoutBtn) {
   logoutBtn.addEventListener("click", () => {
     localStorage.removeItem("user");
@@ -56,5 +66,13 @@ if (logoutBtn) {
   });
 }
 
-// --- INICIO ---
+
+function updateCartCount() {
+  if (cartCount) {
+    cartCount.textContent = getCartItemCount().toString();
+  }
+}
+
+
 loadProducts();
+updateCartCount(); 

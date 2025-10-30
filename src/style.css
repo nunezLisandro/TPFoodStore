@@ -22,7 +22,6 @@ body {
   color: var(--text-light);
 }
 
-/* === ENLACES === */
 a {
   font-weight: 500;
   color: var(--primary-color);
@@ -33,14 +32,14 @@ a:hover {
   color: var(--primary-hover);
 }
 
-/* === HEADERS === */
+
 h1, h2, h3 {
   margin-bottom: 1rem;
   color: var(--primary-color);
   text-align: center;
 }
 
-/* === FORMULARIOS LOGIN / REGISTER === */
+
 form {
   max-width: 400px;
   margin: 5rem auto;
@@ -100,7 +99,7 @@ form button:hover {
   display: block;
 }
 
-/* === BOTONES DE REDIRECCIÓN LOGIN / REGISTER === */
+
 .redirect {
   text-align: center;
   margin-top: 1rem;
@@ -111,7 +110,7 @@ form button:hover {
   font-weight: bold;
 }
 
-/* === ADMIN HOME HEADER === */
+
 header {
   display: flex;
   justify-content: space-between;
@@ -145,7 +144,7 @@ header button:hover {
   background: #fff3e0;
 }
 
-/* === CARDS ADMIN / PRODUCTOS === */
+
 #products, .admin-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -213,7 +212,7 @@ header button:hover {
   background: #c9302c;
 }
 
-/* === MENSAJES VACÍOS / ERROR === */
+
 .empty, .error {
   text-align: center;
   margin-top: 2rem;
@@ -224,7 +223,7 @@ header button:hover {
   color: var(--error-color);
 }
 
-/* === LOADER === */
+
 #loader {
   display: none;
   margin: 2rem auto;
@@ -242,7 +241,7 @@ header button:hover {
   }
 }
 
-/* === MODO CLARO === */
+
 @media (prefers-color-scheme: light) {
   body {
     background: var(--bg-light);
