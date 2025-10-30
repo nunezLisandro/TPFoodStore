@@ -35,18 +35,20 @@ if (form) {
       // eslint-disable-next-line no-console
       console.info('[register] response', user);
 
-      if (user && user.id) {
-        // auto login
-        loginUser(user);
-        // show a short message then redirect
-        if (errorBox) {
-          errorBox.textContent = 'Registro correcto. Redirigiendo...';
-          errorBox.classList.add('visible');
-        }
-        window.location.href = user.role === 'admin' ? '/src/pages/admin/adminHome/adminHome.html' : '/src/pages/store/home/home.html';
-      } else {
-        showError('Error al registrar');
-      }
+        if (user && user.id) {
+    if (errorBox) {
+      errorBox.textContent = 'Registro correcto. Redirigiendo al login...';
+      errorBox.classList.add('visible');
+    }
+    
+    // Espera un segundo para mostrar el mensaje
+    setTimeout(() => {
+      window.location.href = '/src/pages/auth/login/login.html'; // 👈 redirige al login
+    }, 1000);
+  } else {
+    showError('Error al registrar');
+  }
+
     } catch (err: any) {
       // Show full error (backend message or whole body) and log to console
       const msg = err?.message || 'Error en el registro';

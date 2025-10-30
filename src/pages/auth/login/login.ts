@@ -2,36 +2,35 @@ import { apiFetch } from "../../../api";
 import { loginUser } from "../../../utils/auth";
 
 const form = document.getElementById("loginForm") as HTMLFormElement | null;
+const errorBox = document.getElementById("loginError");
+
+function showError(msg: string) {
+  if (errorBox) {
+    errorBox.textContent = msg;
+    errorBox.classList.add("visible");
+  } else {
+    alert(msg);
+  }
+}
+
+function clearError() {
+  if (errorBox) {
+    errorBox.textContent = "";
+    errorBox.classList.remove("visible");
+  }
+}
 
 if (form) {
-  const errorBox = document.getElementById('loginError');
-
-  function showError(msg: string) {
-    if (errorBox) {
-      errorBox.textContent = msg;
-      errorBox.classList.add('visible');
-    } else {
-      alert(msg);
-    }
-  }
-
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const emailEl = document.getElementById("email") as HTMLInputElement | null;
-    const passwordEl = document.getElementById("password") as HTMLInputElement | null;
-    const email = (emailEl?.value || "").trim();
-    const password = (passwordEl?.value || "").trim();
+    clearError();
 
-    // Validaciones simples
+    const email = (document.getElementById("email") as HTMLInputElement)?.value.trim();
+    const password = (document.getElementById("password") as HTMLInputElement)?.value.trim();
+
     const emailRe = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
-    if (!emailRe.test(email)) {
-      showError('Ingresa un correo electrónico válido');
-      return;
-    }
-    if (password.length < 6) {
-      showError('La contraseña debe tener al menos 6 caracteres');
-      return;
-    }
+    if (!emailRe.test(email)) return showError("Ingresa un correo electrónico válido");
+    if (password.length < 6) return showError("La contraseña debe tener al menos 6 caracteres");
 
     try {
       const user = await apiFetch("/auth/login", {
@@ -41,9 +40,11 @@ if (form) {
 
       if (user && user.role) {
         loginUser(user);
-        if (user.role === "admin")
-          window.location.href = "/src/pages/admin/adminHome/adminHome.html";
-        else window.location.href = "/src/pages/store/home/home.html";
+        // Redirección según rol
+        window.location.href =
+          user.role === "admin"
+            ? "/src/pages/admin/adminHome/adminHome.html"
+            : "/src/pages/store/home/home.html";
       } else {
         showError("Credenciales inválidas");
       }
@@ -51,6 +52,4 @@ if (form) {
       showError(err?.message || "Error al autenticar");
     }
   });
-} else {
-  // Page doesn't contain a login form; nothing to do
 }

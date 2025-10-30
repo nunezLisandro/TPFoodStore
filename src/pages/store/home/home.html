@@ -1,12 +1,25 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <title>Home</title>
-</head>
-<body>
-  <h1>Bienvenido a Food Store</h1>
-  <div id="products"></div>
-  <script type="module" src="./home.ts"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Food Store - Home</title>
+    <link rel="stylesheet" href="./home.css" />
+  </head>
+  <body>
+    <header>
+      <h2>🍔 Food Store</h2>
+      <div>
+        <span id="userInfo"></span>
+        <button id="logoutBtn">Cerrar sesión</button>
+      </div>
+    </header>
+
+    <div id="loader"></div>
+
+    <main>
+      <div id="products"></div>
+    </main>
+
+    <script type="module" src="./home.ts"></script>
+  </body>
 </html>
