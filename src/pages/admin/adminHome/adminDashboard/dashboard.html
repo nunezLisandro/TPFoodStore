@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Panel de Administración</title>
+  <link rel="stylesheet" href="./dashboard.css" />
+</head>
+<body>
+  <div id="dashboard">
+    <aside class="sidebar">
+      <h2>Admin Panel</h2>
+      <ul>
+        <li><button data-section="products">Productos</button></li>
+        <li><button data-section="users">Usuarios</button></li>
+        <li><button data-section="texts">Textos</button></li>
+        <li><button data-logout>Cerrar sesión</button></li>
+      </ul>
+    </aside>
+
+    <main class="content">
+      <h1 id="sectionTitle">Bienvenido al panel</h1>
+      <div id="sectionContent"></div>
+    </main>
+  </div>
+
+  <script type="module" src="./dashboard.ts"></script>
+</body>
+</html>

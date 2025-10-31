@@ -14,4 +14,5 @@ if (toStore) {
   });
 }
 
-// logout button is handled by initApp via [data-logout]
+
+
