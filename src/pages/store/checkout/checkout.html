@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout - Food Store</title>
+    <link rel="stylesheet" href="./checkout.css">
+</head>
+<body>
+    <header>
+        <h2>🛍️ Finalizar Compra</h2>
+        <div>
+            <a href="/src/pages/store/cart/cart.html" class="back-btn">← Volver al carrito</a>
+            <span id="userInfo"></span>
+        </div>
+    </header>
+
+    <main>
+        <div class="checkout-container">
+            <div class="checkout-form">
+                <h3>Datos de envío</h3>
+                <form id="checkoutForm">
+                    <div class="form-group">
+                        <label for="address">Dirección de entrega</label>
+                        <input type="text" id="address" name="address" required
+                            placeholder="Ej: Calle 123, Ciudad">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Teléfono de contacto</label>
+                        <input type="tel" id="phone" name="phone" required
+                            placeholder="Ej: +54 9 11 1234-5678">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Notas adicionales (opcional)</label>
+                        <textarea id="notes" name="notes" rows="3"
+                            placeholder="Instrucciones especiales para la entrega"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Método de pago</label>
+                        <div class="payment-methods">
+                            <label class="payment-option">
+                                <input type="radio" name="paymentMethod" value="efectivo" checked>
+                                <span>💵 Efectivo</span>
+                            </label>
+                            <label class="payment-option">
+                                <input type="radio" name="paymentMethod" value="tarjeta">
+                                <span>💳 Tarjeta al repartidor</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="confirmBtn" class="confirm-btn">
+                        Confirmar Pedido
+                    </button>
+                </form>
+            </div>
+
+            <div class="order-summary">
+                <h3>Resumen del pedido</h3>
+                <div id="orderItems"></div>
+                <div class="summary-totals">
+                    <div class="summary-item">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">$0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Envío:</span>
+                        <span id="shipping">$200</span>
+                    </div>
+                    <div class="summary-item total">
+                        <span>Total:</span>
+                        <span id="total">$0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p>Procesando pedido...</p>
+    </div>
+
+    <script type="module" src="./checkout.ts"></script>
+</body>
+</html>

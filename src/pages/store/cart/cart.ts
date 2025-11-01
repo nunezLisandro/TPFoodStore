@@ -77,15 +77,10 @@ function renderCart() {
 };
 
 
-checkoutBtn.addEventListener("click", async () => {
+checkoutBtn.addEventListener("click", () => {
     const items = getCartItems();
     if (items.length === 0) return;
-
-    try {
-        alert("¡Gracias por tu compra! Pronto implementaremos el checkout completo.");
-    } catch (error) {
-        alert("Error al procesar la compra. Por favor intenta nuevamente.");
-    }
+    window.location.href = "/src/pages/store/checkout/checkout.html";
 });
 
 

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>¡Pedido Confirmado! - Food Store</title>
+    <link rel="stylesheet" href="./confirmation.css">
+</head>
+<body>
+    <main class="confirmation-container">
+        <div class="confirmation-card">
+            <div class="success-icon">✓</div>
+            <h1>¡Gracias por tu pedido!</h1>
+            <p class="order-number">Número de pedido: <span id="orderId"></span></p>
+            <p class="message">
+                Hemos recibido tu pedido correctamente. Te enviaremos actualizaciones
+                sobre el estado de tu pedido por correo electrónico.
+            </p>
+            <div class="next-steps">
+                <h3>Próximos pasos:</h3>
+                <ol>
+                    <li>Recibirás un correo de confirmación con los detalles de tu pedido</li>
+                    <li>Te notificaremos cuando tu pedido esté en camino</li>
+                    <li>Prepara el método de pago seleccionado para cuando llegue el repartidor</li>
+                </ol>
+            </div>
+            <div class="buttons">
+                <a href="/src/pages/store/home/home.html" class="primary-btn">Volver a la tienda</a>
+            </div>
+        </div>
+    </main>
+    <script type="module" src="./confirmation.ts"></script>
+</body>
+</html>
