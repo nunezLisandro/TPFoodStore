@@ -33,7 +33,7 @@ if (form) {
     if (password.length < 6) return showError("La contraseña debe tener al menos 6 caracteres");
 
     try {
-      const user = await apiFetch("/auth/login", {
+      const user = await apiFetch("/api/auth/login", {
         method: "POST",
         body: JSON.stringify({ email, password }),
       });
