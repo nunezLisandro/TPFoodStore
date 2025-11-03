@@ -5,13 +5,32 @@ const form = document.getElementById('registerForm') as HTMLFormElement | null;
 const errorBox = document.getElementById('registerError');
 
 function showError(msg: string){
-  if (errorBox) { errorBox.textContent = msg; errorBox.classList.add('visible'); }
+  if (errorBox) { 
+    errorBox.textContent = msg; 
+    errorBox.classList.add('visible');
+    errorBox.style.color = '#d63031'; // rojo para errores
+  }
+  else alert(msg);
+}
+
+function showSuccess(msg: string){
+  if (errorBox) { 
+    errorBox.textContent = msg; 
+    errorBox.classList.add('visible');
+    errorBox.style.color = '#00b894'; // verde para éxito
+  }
   else alert(msg);
 }
 
 if (form) {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    
+    // Limpiar errores anteriores
+    if (errorBox) {
+      errorBox.classList.remove('visible');
+    }
+    
     const name = (document.getElementById('name') as HTMLInputElement).value.trim();
     const email = (document.getElementById('email') as HTMLInputElement).value.trim();
     const password = (document.getElementById('password') as HTMLInputElement).value.trim();
@@ -24,7 +43,6 @@ if (form) {
     try {
       const body = { name, email, password };
       // debug logs to help diagnose failed requests
-      // eslint-disable-next-line no-console
       console.info('[register] POST', `${API_URL}/auth/register`, body);
 
       const user = await apiFetch('/auth/register', {
@@ -32,22 +50,18 @@ if (form) {
         body: JSON.stringify(body),
       });
 
-      // eslint-disable-next-line no-console
       console.info('[register] response', user);
 
-        if (user && user.id) {
-    if (errorBox) {
-      errorBox.textContent = 'Registro correcto. Redirigiendo al login...';
-      errorBox.classList.add('visible');
-    }
-    
-    // Espera un segundo para mostrar el mensaje
-    setTimeout(() => {
-      window.location.href = '/src/pages/auth/login/login.html'; // 👈 redirige al login
-    }, 1000);
-  } else {
-    showError('Error al registrar');
-  }
+      if (user && user.id) {
+        showSuccess('✅ Registro exitoso! Redirigiendo al login...');
+        
+        // Espera un segundo para mostrar el mensaje
+        setTimeout(() => {
+          window.location.href = '/src/pages/auth/login/login.html';
+        }, 1500);
+      } else {
+        showError('Error al registrar usuario');
+      }
 
     } catch (err: any) {
       // Show full error (backend message or whole body) and log to console

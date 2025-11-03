@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Admin Login</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        button { padding: 10px 20px; margin: 10px; cursor: pointer; }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+        #result { margin: 20px 0; padding: 10px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <h1>Test Login y Admin</h1>
+    
+    <h2>Pruebas de Login</h2>
+    <button onclick="testUserLogin()">Test Login Usuario Normal</button>
+    <button onclick="testAdminLogin()">Test Login Admin (simulado)</button>
+    <button onclick="clearStorage()">Limpiar Storage</button>
+    
+    <h2>Navegación</h2>
+    <button onclick="goToLogin()">Ir a Login Real</button>
+    <button onclick="goToAdminHome()">Ir a Admin Home</button>
+    <button onclick="goToStoreHome()">Ir a Store Home</button>
+    
+    <div id="result"></div>
+
+    <script type="module">
+        import { apiFetch, API_URL } from './src/api.js';
+        import { loginUser, getUser, isLoggedIn, isAdmin } from './src/utils/auth.js';
+
+        window.testUserLogin = async function() {
+            const result = document.getElementById('result');
+            result.innerHTML = 'Probando login de usuario normal...';
+            
+            try {
+                const user = await apiFetch('/auth/login', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        email: 'testuser@example.com',
+                        password: '123456'
+                    })
+                });
+                
+                console.log('Login result:', user);
+                loginUser(user);
+                
+                result.innerHTML = `
+                    <div class="success">✅ Login exitoso!</div>
+                    <div class="info">Usuario: ${JSON.stringify(user)}</div>
+                    <div class="info">isLoggedIn: ${isLoggedIn()}</div>
+                    <div class="info">isAdmin: ${isAdmin()}</div>
+                `;
+            } catch (error) {
+                result.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+                console.error('Login error:', error);
+            }
+        };
+
+        window.testAdminLogin = function() {
+            // Simular un admin creando un objeto de usuario admin
+            const adminUser = {
+                id: 999,
+                name: 'Admin Test',
+                email: 'admin@test.com',
+                role: 'admin'
+            };
+            
+            loginUser(adminUser);
+            
+            const result = document.getElementById('result');
+            result.innerHTML = `
+                <div class="success">✅ Login de admin simulado!</div>
+                <div class="info">Usuario: ${JSON.stringify(adminUser)}</div>
+                <div class="info">isLoggedIn: ${isLoggedIn()}</div>
+                <div class="info">isAdmin: ${isAdmin()}</div>
+            `;
+        };
+
+        window.clearStorage = function() {
+            localStorage.clear();
+            const result = document.getElementById('result');
+            result.innerHTML = '<div class="info">Storage limpiado</div>';
+        };
+
+        window.goToLogin = function() {
+            window.location.href = '/src/pages/auth/login/login.html';
+        };
+
+        window.goToAdminHome = function() {
+            window.location.href = '/src/pages/admin/adminHome/adminHome.html';
+        };
+
+        window.goToStoreHome = function() {
+            window.location.href = '/src/pages/store/home/home.html';
+        };
+
+        // Mostrar estado actual al cargar
+        window.addEventListener('load', function() {
+            const user = getUser();
+            const result = document.getElementById('result');
+            result.innerHTML = `
+                <div class="info"><strong>Estado actual:</strong></div>
+                <div class="info">Usuario actual: ${user ? JSON.stringify(user) : 'No logueado'}</div>
+                <div class="info">isLoggedIn: ${isLoggedIn()}</div>
+                <div class="info">isAdmin: ${isAdmin()}</div>
+                <div class="info">API_URL: ${API_URL}</div>
+            `;
+        });
+    </script>
+</body>
+</html>

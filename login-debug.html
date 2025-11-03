@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Debug</title>
+    <style>
+        body { font-family: Arial; padding: 20px; max-width: 500px; margin: 0 auto; }
+        input, button { width: 100%; padding: 10px; margin: 5px 0; box-sizing: border-box; }
+        button { background: #007bff; color: white; border: none; cursor: pointer; font-size: 16px; }
+        .status { margin: 10px 0; padding: 10px; border: 1px solid #ccc; min-height: 50px; }
+        .error { background: #ffebee; border-color: #f44336; color: #d32f2f; }
+        .success { background: #e8f5e8; border-color: #4caf50; color: #388e3c; }
+        .warning { background: #fff3e0; border-color: #ff9800; color: #f57c00; }
+    </style>
+</head>
+<body>
+    <h1>🔑 Login Debug</h1>
+    
+    <input type="email" id="email" placeholder="Email" value="admin@food.com">
+    <input type="password" id="password" placeholder="Password" value="admin123">
+    <button onclick="doLogin()">🚀 INICIAR SESIÓN</button>
+    
+    <div id="status" class="status">Listo para iniciar sesión...</div>
+    
+    <h3>Debug Info:</h3>
+    <div>Backend URL: http://localhost:8081/api</div>
+    <div>Frontend URL: http://localhost:5174</div>
+    
+    <script>
+        let stepCount = 0;
+        
+        function log(message, type = 'info') {
+            stepCount++;
+            console.log(`[${stepCount}] ${message}`);
+            
+            const status = document.getElementById('status');
+            const time = new Date().toLocaleTimeString();
+            status.innerHTML += `<div>[${time}] ${message}</div>`;
+            
+            if (type === 'error') {
+                status.className = 'status error';
+            } else if (type === 'success') {
+                status.className = 'status success';
+            } else if (type === 'warning') {
+                status.className = 'status warning';
+            }
+        }
+        
+        async function doLogin() {
+            stepCount = 0;
+            const status = document.getElementById('status');
+            status.innerHTML = '';
+            status.className = 'status';
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            log(`🔍 Iniciando login para: ${email}`);
+            log(`📡 URL del backend: http://localhost:8081/api`);
+            
+            try {
+                log('🌐 Haciendo petición HTTP...');
+                
+                const response = await fetch('http://localhost:8081/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                log(`📊 Código de respuesta: ${response.status}`);
+                
+                if (response.ok) {
+                    const user = await response.json();
+                    log(`✅ LOGIN EXITOSO!`, 'success');
+                    log(`👤 Usuario: ${user.name}`);
+                    log(`📧 Email: ${user.email}`);
+                    log(`🎭 Rol: ${user.role}`);
+                    
+                    // Guardar en localStorage
+                    localStorage.setItem('foodstore_user', JSON.stringify(user));
+                    log(`💾 Usuario guardado en localStorage`);
+                    
+                    // Botones de navegación
+                    status.innerHTML += `
+                        <div style="margin-top: 15px;">
+                            <button onclick="window.location.href='/src/pages/admin/adminHome/adminHome.html'" 
+                                    style="background: red; margin: 5px;">🔧 IR A ADMIN</button>
+                            <button onclick="window.location.href='/src/pages/store/home/home.html'" 
+                                    style="background: green; margin: 5px;">🛒 IR A TIENDA</button>
+                        </div>
+                    `;
+                    
+                } else {
+                    const errorText = await response.text();
+                    log(`❌ Error ${response.status}: ${errorText}`, 'error');
+                }
+                
+            } catch (error) {
+                log(`💥 Error de conexión: ${error.message}`, 'error');
+                log(`🔍 Detalles: ${error.toString()}`);
+            }
+        }
+        
+        // Test inicial al cargar
+        window.addEventListener('load', function() {
+            log('🚀 Página cargada correctamente');
+            log('📋 Credenciales pre-cargadas: admin@food.com / admin123');
+        });
+    </script>
+</body>
+</html>

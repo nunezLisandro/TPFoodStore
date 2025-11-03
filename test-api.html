@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test API</title>
+</head>
+<body>
+    <h1>Test de API</h1>
+    <button id="testBtn">Probar Conexión API</button>
+    <div id="result"></div>
+
+    <script type="module">
+        import { apiFetch, API_URL } from './src/api.js';
+        
+        document.getElementById('testBtn').addEventListener('click', async () => {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Probando...';
+            
+            console.log('API_URL:', API_URL);
+            
+            try {
+                // Probar registro
+                const registerResult = await apiFetch('/auth/register', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        name: 'Test User ' + Date.now(),
+                        email: 'test' + Date.now() + '@example.com',
+                        password: '123456'
+                    })
+                });
+                
+                console.log('Register result:', registerResult);
+                
+                // Probar login
+                const loginResult = await apiFetch('/auth/login', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        email: 'testuser@example.com',
+                        password: '123456'
+                    })
+                });
+                
+                console.log('Login result:', loginResult);
+                resultDiv.innerHTML = `
+                    <p>✅ API funcionando!</p>
+                    <p>API_URL: ${API_URL}</p>
+                    <p>Register: ${JSON.stringify(registerResult)}</p>
+                    <p>Login: ${JSON.stringify(loginResult)}</p>
+                `;
+                
+            } catch (error) {
+                console.error('Error:', error);
+                resultDiv.innerHTML = `
+                    <p>❌ Error: ${error.message}</p>
+                    <p>API_URL: ${API_URL}</p>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>

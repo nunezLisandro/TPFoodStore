@@ -1,55 +1,73 @@
 import { apiFetch } from "../../../api";
 import { loginUser } from "../../../utils/auth";
 
-const form = document.getElementById("loginForm") as HTMLFormElement | null;
-const errorBox = document.getElementById("loginError");
+// Esperar a que el DOM esté completamente cargado
+setTimeout(() => {
+  const loginButton = document.getElementById("loginButton") as HTMLButtonElement;
+  
+  if (loginButton) {
+    loginButton.onclick = async (e: Event) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const emailInput = document.getElementById("email") as HTMLInputElement;
+      const passwordInput = document.getElementById("password") as HTMLInputElement;
+      const errorBox = document.getElementById("loginError") as HTMLElement;
 
-function showError(msg: string) {
-  if (errorBox) {
-    errorBox.textContent = msg;
-    errorBox.classList.add("visible");
-  } else {
-    alert(msg);
-  }
-}
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
 
-function clearError() {
-  if (errorBox) {
-    errorBox.textContent = "";
-    errorBox.classList.remove("visible");
-  }
-}
+      // Limpiar errores anteriores
+      errorBox.style.display = "none";
 
-if (form) {
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    clearError();
-
-    const email = (document.getElementById("email") as HTMLInputElement)?.value.trim();
-    const password = (document.getElementById("password") as HTMLInputElement)?.value.trim();
-
-    const emailRe = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
-    if (!emailRe.test(email)) return showError("Ingresa un correo electrónico válido");
-    if (password.length < 6) return showError("La contraseña debe tener al menos 6 caracteres");
-
-    try {
-      const user = await apiFetch("/api/auth/login", {
-        method: "POST",
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (user && user.role) {
-        loginUser(user);
-        // Redirección según rol
-        window.location.href =
-          user.role === "admin"
-            ? "/src/pages/admin/adminHome/adminHome.html"
-            : "/src/pages/store/home/home.html";
-      } else {
-        showError("Credenciales inválidas");
+      if (!email || !password) {
+        errorBox.textContent = "Completa todos los campos";
+        errorBox.style.display = "block";
+        return;
       }
-    } catch (err: any) {
-      showError(err?.message || "Error al autenticar");
-    }
-  });
-}
+
+      try {
+        const user = await apiFetch("/auth/login", {
+          method: "POST",
+          body: JSON.stringify({ email, password }),
+        });
+
+        if (user && user.id) {
+          console.log('Login successful, user received:', user);
+          
+          // Guardar usuario ANTES de redirigir
+          loginUser(user);
+          
+          // Esperar un momento para asegurar que localStorage se actualice
+          await new Promise(resolve => setTimeout(resolve, 50));
+          
+          // Verificar que se guardó correctamente
+          const savedUser = localStorage.getItem('user');
+          console.log('Saved user check:', savedUser);
+          
+          if (savedUser) {
+            console.log('User saved successfully, redirecting...');
+            // Usar location.href que es más confiable
+            if (user.role === "admin") {
+              console.log('Redirecting to admin...');
+              window.location.href = "../../admin/adminHome/adminHome.html";
+            } else {
+              console.log('Redirecting to store...');
+              window.location.href = "../../store/home/home.html";
+            }
+          } else {
+            console.error('Failed to save user to localStorage');
+            errorBox.textContent = "Error al guardar sesión";
+            errorBox.style.display = "block";
+          }
+        } else {
+          errorBox.textContent = "Credenciales inválidas";
+          errorBox.style.display = "block";
+        }
+      } catch (err: any) {
+        errorBox.textContent = err?.message || "Error al iniciar sesión";
+        errorBox.style.display = "block";
+      }
+    };
+  }
+}, 100);

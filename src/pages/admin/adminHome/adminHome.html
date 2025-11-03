@@ -2,19 +2,100 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <title>Admin Home</title>
+  <title>Panel de Administración - Food Store</title>
   <link rel="stylesheet" href="/src/style.css" />
+  <style>
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background: #2d3748;
+      color: white;
+      margin-bottom: 2rem;
+    }
+    .admin-nav {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      padding: 0 1rem;
+    }
+    .nav-card {
+      background: white;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .nav-card:hover {
+      border-color: #3182ce;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .nav-card h3 {
+      margin: 0 0 0.5rem 0;
+      color: #2d3748;
+    }
+    .nav-card p {
+      margin: 0;
+      color: #718096;
+      font-size: 0.9rem;
+    }
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .logout-btn {
+      background: #e53e3e;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
   <div id="app">
-    <h1>Bienvenido, admin</h1>
-    <p>Esta es la página de administración.</p>
-    <button id="toStore">Ir a tienda</button>
-    <button data-logout>Logout</button>
+    <header class="admin-header">
+      <h1>🛠️ Panel de Administración</h1>
+      <div class="user-info">
+        <span id="userInfo">👋 Administrador</span>
+        <button id="logoutBtn" class="logout-btn">Cerrar sesión</button>
+      </div>
+    </header>
+
+    <main class="admin-nav">
+      <div class="nav-card" id="categoriesCard">
+        <h3>📂 Categorías</h3>
+        <p>Gestionar categorías de productos</p>
+      </div>
+      
+      <div class="nav-card" id="productsCard">
+        <h3>📦 Productos</h3>
+        <p>Agregar, editar y eliminar productos</p>
+      </div>
+      
+      <div class="nav-card" id="ordersCard">
+        <h3>📋 Pedidos</h3>
+        <p>Ver y gestionar pedidos de clientes</p>
+      </div>
+      
+      <div class="nav-card" id="usersCard">
+        <h3>👥 Usuarios</h3>
+        <p>Gestionar usuarios del sistema</p>
+      </div>
+      
+      <div class="nav-card" id="storeCard">
+        <h3>🏪 Ver Tienda</h3>
+        <p>Ir a la vista de cliente</p>
+      </div>
+    </main>
   </div>
 
-
-  
   <script type="module" src="/src/pages/admin/adminHome/adminHome.ts"></script>
 </body>
 </html>

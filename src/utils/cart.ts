@@ -1,91 +1,123 @@
-interface CartItem {
-    id: number;
-    nombre: string;
-    precio: number;
-    cantidad: number;
-    imagen?: string;
+import { ICartItem, ICart } from '../types/ICart';
+
+const CART_STORAGE_KEY = 'foodstore_cart';
+const SHIPPING_COST = 500;
+
+// Obtener carrito del localStorage
+export function getCart(): ICart {
+  const cartData = localStorage.getItem(CART_STORAGE_KEY);
+  if (cartData) {
+    return JSON.parse(cartData);
+  }
+  return { items: [], total: 0 };
 }
 
-interface Cart {
-    items: CartItem[];
-    total: number;
+// Guardar carrito en localStorage
+export function saveCart(cart: ICart): void {
+  localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
 }
 
-const CART_KEY = 'cart';
-
-function getCart(): Cart {
-    const stored = localStorage.getItem(CART_KEY);
-    if (!stored) return { items: [], total: 0 };
-    return JSON.parse(stored);
+// Calcular total del carrito
+export function calculateCartTotal(items: ICartItem[]): number {
+  return items.reduce((total, item) => total + (item.product.precio * item.quantity), 0);
 }
 
-function saveCart(cart: Cart) {
-    localStorage.setItem(CART_KEY, JSON.stringify(cart));
-}
-
-export function addToCart(product: any, cantidad: number = 1) {
-    const cart = getCart();
-    const existing = cart.items.find(item => item.id === product.id);
-
-if (existing) {
-    existing.cantidad += cantidad;
-} else {
-    cart.items.push({
-        id: product.id,
-        nombre: product.nombre,
-        precio: product.precio,
-        cantidad,
-        imagen: product.imagen
-    });
+// Agregar producto al carrito
+export function addToCart(product: { id: number; nombre: string; precio: number; imagen: string; stock: number }, quantity: number = 1): boolean {
+  const cart = getCart();
+  
+  // Verificar si el producto ya está en el carrito
+  const existingItemIndex = cart.items.findIndex(item => item.product.id === product.id);
+  
+  if (existingItemIndex >= 0) {
+    // Si ya existe, aumentar cantidad
+    const newQuantity = cart.items[existingItemIndex].quantity + quantity;
+    if (newQuantity <= product.stock) {
+      cart.items[existingItemIndex].quantity = newQuantity;
+    } else {
+      return false; // No hay suficiente stock
     }
-
-cart.total = calculateTotal(cart.items);
-saveCart(cart);
-return cart;
-}
-
-export function removeFromCart(productId: number) {
-    const cart = getCart();
-    cart.items = cart.items.filter(item => item.id !== productId);
-    cart.total = calculateTotal(cart.items);
-    saveCart(cart);
-    return cart;
-}
-
-export function updateQuantity(productId: number, cantidad: number) {
-    const cart = getCart();
-    const item = cart.items.find(item => item.id === productId);
-
-if (item) {
-    item.cantidad = Math.max(0, cantidad);
-    if (item.cantidad === 0) {
-        return removeFromCart(productId);
+  } else {
+    // Si no existe, agregar nuevo item
+    if (quantity <= product.stock) {
+      cart.items.push({
+        product,
+        quantity
+      });
+    } else {
+      return false; // No hay suficiente stock
     }
+  }
+  
+  cart.total = calculateCartTotal(cart.items);
+  saveCart(cart);
+  return true;
 }
 
-    cart.total = calculateTotal(cart.items);
+// Remover producto del carrito
+export function removeFromCart(productId: number): void {
+  const cart = getCart();
+  cart.items = cart.items.filter(item => item.product.id !== productId);
+  cart.total = calculateCartTotal(cart.items);
+  saveCart(cart);
+}
+
+// Actualizar cantidad de un producto en el carrito
+export function updateCartItemQuantity(productId: number, quantity: number): boolean {
+  const cart = getCart();
+  const itemIndex = cart.items.findIndex(item => item.product.id === productId);
+  
+  if (itemIndex >= 0) {
+    if (quantity <= 0) {
+      // Si la cantidad es 0 o menos, remover el item
+      cart.items.splice(itemIndex, 1);
+    } else if (quantity <= cart.items[itemIndex].product.stock) {
+      // Actualizar cantidad si hay stock suficiente
+      cart.items[itemIndex].quantity = quantity;
+    } else {
+      return false; // No hay suficiente stock
+    }
+    
+    cart.total = calculateCartTotal(cart.items);
     saveCart(cart);
-    return cart;
+    return true;
+  }
+  return false;
 }
 
-export function getCartItems(): CartItem[] {
-    return getCart().items;
+// Obtener cantidad de items en el carrito
+export function getCartItemCount(): number {
+  const cart = getCart();
+  return cart.items.reduce((count, item) => count + item.quantity, 0);
+}
+
+// Vaciar carrito
+export function clearCart(): void {
+  const emptyCart: ICart = { items: [], total: 0 };
+  saveCart(emptyCart);
+}
+
+// Obtener total con envío
+export function getCartTotalWithShipping(): number {
+  const cart = getCart();
+  return cart.total + SHIPPING_COST;
+}
+
+// Obtener costo de envío
+export function getShippingCost(): number {
+  return SHIPPING_COST;
+}
+
+// Funciones de compatibilidad para las páginas existentes
+export function getCartItems(): ICartItem[] {
+  return getCart().items;
 }
 
 export function getCartTotal(): number {
-    return getCart().total;
+  const cart = getCart();
+  return cart.total;
 }
 
-export function clearCart() {
-    localStorage.removeItem(CART_KEY);
-    return { items: [], total: 0 };
-}
-
-function calculateTotal(items: CartItem[]): number {
-  return items.reduce((total, item) => total + (item.precio * item.cantidad), 0);
-}
-
-export function getCartItemCount(): number {
-    const cart = getCart();
-    return cart.items.reduce((count, item) => count + item.cantidad, 0);
+export function updateQuantity(productId: number, quantity: number): boolean {
+  return updateCartItemQuantity(productId, quantity);
 }
