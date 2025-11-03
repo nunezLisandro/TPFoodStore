@@ -27,6 +27,16 @@ public class UserService {
         return userRepository.save(u);
     }
 
+    public User registerAdmin(String name, String email, String rawPassword) {
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new RuntimeException("Email already in use");
+        }
+        String hashed = passwordEncoder.encode(rawPassword);
+        // role admin
+        User u = new User(name, email, hashed, "admin");
+        return userRepository.save(u);
+    }
+
     public Optional<User> login(String email, String rawPassword) {
         Optional<User> user = userRepository.findByEmail(email);
         if (user.isPresent()) {
