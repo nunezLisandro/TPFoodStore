@@ -18,7 +18,6 @@ public class OrderService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     
-    // Costo de envío fijo
     private static final BigDecimal SHIPPING_COST = new BigDecimal("500.00");
 
     public OrderService(OrderRepository orderRepository, OrderItemRepository orderItemRepository, 

@@ -109,7 +109,6 @@ public class ProductController {
         }
     }
 
-    // Método auxiliar para convertir ProductRequest a Product
     private Product convertToProduct(ProductRequest request) {
         Product product = new Product();
         product.setNombre(request.getNombre());
@@ -119,7 +118,6 @@ public class ProductController {
         product.setImagen(request.getImagen());
         product.setDisponible(request.getDisponible());
         
-        // Configurar categoría
         if (request.getCategoriaId() != null) {
             com.example.foodstore.model.Categoria categoria = new com.example.foodstore.model.Categoria();
             categoria.setId(request.getCategoriaId());
@@ -129,7 +127,6 @@ public class ProductController {
         return product;
     }
 
-    // Clases auxiliares
     private static class ErrorResponse {
         private String message;
 
@@ -138,44 +135,5 @@ public class ProductController {
         }
 
         public String getMessage() { return message; }
-    }
-
-    public static class ProductRequest {
-        private String nombre;
-        private String descripcion;
-        private java.math.BigDecimal precio;
-        private Integer stock;
-        private String imagen;
-        private Boolean disponible;
-        private Long categoriaId;
-
-        // Getters y setters
-        public String getNombre() { return nombre; }
-        public void setNombre(String nombre) { this.nombre = nombre; }
-
-        public String getDescripcion() { return descripcion; }
-        public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
-
-        public java.math.BigDecimal getPrecio() { return precio; }
-        public void setPrecio(java.math.BigDecimal precio) { this.precio = precio; }
-
-        public Integer getStock() { return stock; }
-        public void setStock(Integer stock) { this.stock = stock; }
-
-        public String getImagen() { return imagen; }
-        public void setImagen(String imagen) { this.imagen = imagen; }
-
-        public Boolean getDisponible() { return disponible; }
-        public void setDisponible(Boolean disponible) { this.disponible = disponible; }
-
-        public Long getCategoriaId() { return categoriaId; }
-        public void setCategoriaId(Long categoriaId) { this.categoriaId = categoriaId; }
-    }
-
-    public static class StockUpdateRequest {
-        private Integer stock;
-
-        public Integer getStock() { return stock; }
-        public void setStock(Integer stock) { this.stock = stock; }
     }
 }

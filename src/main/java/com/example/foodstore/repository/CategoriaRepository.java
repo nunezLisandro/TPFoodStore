@@ -9,9 +9,7 @@ import java.util.List;
 @Repository
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
     
-    // Buscar categoría por nombre
     List<Categoria> findByNombreContainingIgnoreCase(String nombre);
     
-    // Verificar si existe una categoría con ese nombre
     boolean existsByNombre(String nombre);
 }

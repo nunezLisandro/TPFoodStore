@@ -86,7 +86,6 @@ public class OrderController {
         }
     }
 
-    // Endpoint para estadísticas (útil para dashboard admin)
     @GetMapping("/stats")
     public ResponseEntity<OrderStats> getOrderStats() {
         OrderStats stats = new OrderStats();
@@ -99,7 +98,6 @@ public class OrderController {
         return ResponseEntity.ok(stats);
     }
 
-    // Clases auxiliares
     public static class OrderRequest {
         private Long usuarioId;
         private List<OrderService.OrderItemRequest> items;
@@ -108,7 +106,6 @@ public class OrderController {
         private String metodoPago;
         private String notas;
 
-        // Getters y setters
         public Long getUsuarioId() { return usuarioId; }
         public void setUsuarioId(Long usuarioId) { this.usuarioId = usuarioId; }
 
@@ -135,7 +132,6 @@ public class OrderController {
         private Long completed;
         private Long cancelled;
 
-        // Getters y setters
         public Long getTotal() { return total; }
         public void setTotal(Long total) { this.total = total; }
 

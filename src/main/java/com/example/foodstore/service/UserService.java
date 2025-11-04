@@ -22,7 +22,6 @@ public class UserService {
             throw new RuntimeException("Email already in use");
         }
         String hashed = passwordEncoder.encode(rawPassword);
-        // default role cliente
         User u = new User(name, email, hashed, "cliente");
         return userRepository.save(u);
     }
@@ -32,7 +31,6 @@ public class UserService {
             throw new RuntimeException("Email already in use");
         }
         String hashed = passwordEncoder.encode(rawPassword);
-        // role admin
         User u = new User(name, email, hashed, "admin");
         return userRepository.save(u);
     }

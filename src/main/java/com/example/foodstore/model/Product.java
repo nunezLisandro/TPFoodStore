@@ -32,7 +32,7 @@ public class Product {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "categoria_id", nullable = false)
-    @JsonIgnoreProperties("productos") // Evitar recursión infinita
+    @JsonIgnoreProperties("productos") 
     private Categoria categoria;
 
     public Product() {}
@@ -48,7 +48,6 @@ public class Product {
         this.categoria = categoria;
     }
 
-    // Getters y Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

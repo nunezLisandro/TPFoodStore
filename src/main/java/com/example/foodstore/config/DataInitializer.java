@@ -27,7 +27,6 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        // Solo inicializar si no hay datos
         if (userRepository.count() == 0) {
             initializeUsers();
         }
@@ -40,12 +39,10 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private void initializeUsers() {
-        // Crear usuario admin
         User admin = new User("Admin", "admin@food.com", 
                              passwordEncoder.encode("admin123"), "admin");
         userRepository.save(admin);
 
-        // Crear usuario cliente
         User cliente = new User("Juan Pérez", "cliente@food.com", 
                                passwordEncoder.encode("cliente123"), "cliente");
         userRepository.save(cliente);
@@ -76,14 +73,12 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private void initializeProducts() {
-        // Obtener categorías
         Categoria pizzas = categoriaRepository.findById(1L).orElse(null);
         Categoria hamburguesas = categoriaRepository.findById(2L).orElse(null);
         Categoria bebidas = categoriaRepository.findById(3L).orElse(null);
         Categoria postres = categoriaRepository.findById(4L).orElse(null);
 
         if (pizzas != null) {
-            // Pizzas
             productRepository.save(new Product("Pizza Margherita", "Pizza clásica con tomate, mozzarella y albahaca", 
                                             new BigDecimal("2500.00"), 10, 
                                             "https://images.unsplash.com/photo-1574071318508-1cdbab80d002", true, pizzas));
@@ -94,7 +89,6 @@ public class DataInitializer implements CommandLineRunner {
         }
 
         if (hamburguesas != null) {
-            // Hamburguesas
             productRepository.save(new Product("Hamburguesa Clásica", "Hamburguesa de carne con lechuga, tomate y cebolla", 
                                             new BigDecimal("2200.00"), 15, 
                                             "https://images.unsplash.com/photo-1568901346375-23c9450c58cd", true, hamburguesas));
@@ -105,7 +99,6 @@ public class DataInitializer implements CommandLineRunner {
         }
 
         if (bebidas != null) {
-            // Bebidas
             productRepository.save(new Product("Gaseosa", "Bebida cola 500ml", 
                                             new BigDecimal("800.00"), 25, 
                                             "https://images.unsplash.com/photo-1629203851122-3726ecdf080e", true, bebidas));
@@ -116,7 +109,6 @@ public class DataInitializer implements CommandLineRunner {
         }
 
         if (postres != null) {
-            // Postres
             productRepository.save(new Product("Tiramisu", "Postre italiano con café y mascarpone", 
                                             new BigDecimal("1800.00"), 6, 
                                             "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9", true, postres));

@@ -22,7 +22,7 @@ public class Categoria {
     private String imagen;
 
     @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore // Evitar recursión infinita en JSON
+    @JsonIgnore 
     private List<Product> productos;
 
     public Categoria() {}
@@ -33,7 +33,6 @@ public class Categoria {
         this.imagen = imagen;
     }
 
-    // Getters y Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

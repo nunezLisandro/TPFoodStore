@@ -38,7 +38,6 @@ public class DebugController {
     @PostMapping("/create-admin")
     public ResponseEntity<?> createAdmin() {
         try {
-            // Crear un admin con credenciales predeterminadas
             User admin = userService.registerAdmin("Admin User", "admin@foodstore.com", "admin123");
             return ResponseEntity.ok(Map.of(
                 "id", admin.getId(),

@@ -25,7 +25,6 @@ public class CategoriaService {
     }
 
     public Categoria save(Categoria categoria) {
-        // Validaciones
         if (categoria.getNombre() == null || categoria.getNombre().trim().isEmpty()) {
             throw new RuntimeException("El nombre de la categoría es requerido");
         }
@@ -36,7 +35,6 @@ public class CategoriaService {
             throw new RuntimeException("La imagen de la categoría es requerida");
         }
 
-        // Verificar que no exista otra categoría con el mismo nombre (para crear nueva)
         if (categoria.getId() == null && categoriaRepository.existsByNombre(categoria.getNombre())) {
             throw new RuntimeException("Ya existe una categoría con ese nombre");
         }

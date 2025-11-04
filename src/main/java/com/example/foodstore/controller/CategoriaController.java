@@ -76,7 +76,6 @@ public class CategoriaController {
         return ResponseEntity.ok(categorias);
     }
 
-    // Clase para respuestas de error
     private static class ErrorResponse {
         private String message;
 

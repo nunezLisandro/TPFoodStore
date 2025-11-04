@@ -5,8 +5,6 @@ com\example\foodstore\controller\OrderController$ErrorResponse.class
 com\example\foodstore\repository\OrderRepository.class
 com\example\foodstore\controller\CategoriaController$ErrorResponse.class
 com\example\foodstore\controller\DebugController.class
-com\example\foodstore\controller\ProductController$ProductRequest.class
-com\example\foodstore\controller\ProductController$StockUpdateRequest.class
 com\example\foodstore\model\User.class
 com\example\foodstore\controller\CategoriaController.class
 com\example\foodstore\model\Order.class
@@ -23,11 +21,9 @@ com\example\foodstore\service\UserService.class
 com\example\foodstore\model\Order$MetodoPago.class
 com\example\foodstore\repository\CategoriaRepository.class
 com\example\foodstore\FoodstoreBackendApplication.class
-com\example\foodstore\controller\ProductController.class
 com\example\foodstore\model\Categoria.class
 com\example\foodstore\model\Order$EstadoPedido.class
 com\example\foodstore\controller\OrderController.class
 com\example\foodstore\config\DataInitializer.class
 com\example\foodstore\service\CategoriaService.class
-com\example\foodstore\controller\ProductController$ErrorResponse.class
 com\example\foodstore\service\OrderService$OrderItemRequest.class

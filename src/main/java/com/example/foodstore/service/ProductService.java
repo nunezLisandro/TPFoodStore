@@ -46,10 +46,8 @@ public class ProductService {
     }
 
     public Product save(Product product) {
-        // Validaciones
         validateProduct(product);
 
-        // Verificar que la categoría exista
         if (product.getCategoria() == null || product.getCategoria().getId() == null) {
             throw new RuntimeException("La categoría es requerida");
         }
@@ -71,7 +69,6 @@ public class ProductService {
 
         Product product = existingProduct.get();
         
-        // Actualizar campos
         product.setNombre(productActualizado.getNombre());
         product.setDescripcion(productActualizado.getDescripcion());
         product.setPrecio(productActualizado.getPrecio());
@@ -79,7 +76,6 @@ public class ProductService {
         product.setImagen(productActualizado.getImagen());
         product.setDisponible(productActualizado.getDisponible());
 
-        // Actualizar categoría si se especifica
         if (productActualizado.getCategoria() != null && productActualizado.getCategoria().getId() != null) {
             Optional<Categoria> categoria = categoriaRepository.findById(productActualizado.getCategoria().getId());
             if (categoria.isEmpty()) {
@@ -125,7 +121,7 @@ public class ProductService {
             throw new RuntimeException("La imagen del producto es requerida");
         }
         if (product.getDisponible() == null) {
-            product.setDisponible(true); // Valor por defecto
+            product.setDisponible(true);
         }
     }
 }

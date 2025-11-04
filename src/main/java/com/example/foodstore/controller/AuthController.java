@@ -29,7 +29,6 @@ public class AuthController {
                 return ResponseEntity.badRequest().body(Map.of("message", "Campos faltantes"));
             }
             User u = userService.register(name, email, password);
-            // return minimal user (without password)
             Map<String, Object> res = Map.of("id", u.getId(), "name", u.getName(), "email", u.getEmail(), "role", u.getRole());
             return ResponseEntity.created(URI.create("/api/auth/register")).body(res);
         } catch (RuntimeException e) {

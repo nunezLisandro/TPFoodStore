@@ -16,8 +16,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // During development we allow all requests to simplify testing (H2 console, frontend, API).
-        // This avoids complex RequestMatcher ambiguity with the H2 servlet. In production tighten this.
         http
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
