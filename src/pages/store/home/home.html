@@ -17,11 +17,40 @@
       </div>
     </header>
 
+    <nav class="category-menu">
+      <ul class="category-list">
+        <li><button class="category-btn active" data-category="todos">🍽️ Todos</button></li>
+        <li><button class="category-btn" data-category="Hamburguesas">🍔 Hamburguesas</button></li>
+        <li><button class="category-btn" data-category="Pizzas">🍕 Pizzas</button></li>
+        <li><button class="category-btn" data-category="Bebidas">🥤 Bebidas</button></li>
+        <li><button class="category-btn" data-category="Postres">🍰 Postres</button></li>
+      </ul>
+    </nav>
+
     <div id="loader"></div>
 
     <main>
       <div id="products"></div>
     </main>
+
+    <div id="productModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <div class="modal-body">
+          <img id="modalImage" src="" alt="" class="modal-image">
+          <div class="modal-info">
+            <h2 id="modalTitle">Producto</h2>
+            <p id="modalDescription">Descripción del producto</p>
+            <div class="modal-price">
+              <span id="modalPrice">$0</span>
+            </div>
+            <div class="modal-actions">
+              <button id="modalAddBtn" class="modal-add-btn">Agregar al carrito</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script type="module" src="./home.ts"></script>
   </body>
