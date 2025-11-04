@@ -12,16 +12,19 @@ export function loginUser(userData: IUser): void {
   const previousUser = previousUserData ? JSON.parse(previousUserData) : null;
   
   console.log('Previous user:', previousUser);
+  console.log('New user:', userData);
   
-  // Si es un usuario diferente, limpiar el carrito
-  if (previousUser && previousUser.id !== userData.id) {
-    localStorage.removeItem(CART_STORAGE_KEY);
-    console.log('Carrito limpiado: usuario diferente detectado');
-  }
+  // Siempre limpiar el carrito al hacer login (para evitar confusiones)
+  // Esto asegura que cada sesión tenga un carrito limpio
+  localStorage.removeItem(CART_STORAGE_KEY);
+  console.log('Carrito limpiado al iniciar sesión');
   
   // Guardar el nuevo usuario
   localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userData));
   console.log('Usuario guardado en localStorage');
+  
+  // Disparar evento personalizado para notificar que el carrito cambió
+  window.dispatchEvent(new Event('cartUpdated'));
 }
 
 // Obtener datos del usuario desde localStorage

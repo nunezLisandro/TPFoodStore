@@ -3,6 +3,7 @@ import { logout } from "../../../utils/auth";
 
 const cartItemsContainer = document.getElementById("cart-items") as HTMLElement;
 const subtotalElement = document.getElementById("subtotal") as HTMLElement;
+const shippingElement = document.getElementById("shipping") as HTMLElement;
 const totalElement = document.getElementById("total") as HTMLElement;
 const checkoutBtn = document.getElementById("checkout-btn") as HTMLButtonElement;
 const logoutBtn = document.getElementById("logoutBtn") as HTMLButtonElement;
@@ -20,7 +21,27 @@ if (!userData) {
 
 function renderCart() {
     const items = getCartItems();
-    const total = getCartTotal();
+    
+    console.log('Cart items:', items); // Debug: ver estructura de items
+    console.log('Raw localStorage cart:', localStorage.getItem('foodstore_cart')); // Debug: ver datos en localStorage
+    
+    // Calcular subtotal
+    const subtotal = items.reduce((sum, item) => {
+        console.log('Processing item for subtotal:', item); // Debug: ver cada item
+        const precio = typeof item.product.precio === 'string' ? 
+            parseFloat(item.product.precio) : item.product.precio || 0;
+        const quantity = item.quantity || 0;
+        console.log('Precio:', precio, 'Quantity:', quantity); // Debug
+        return sum + (precio * quantity);
+    }, 0);
+    
+    // Calcular envío (gratis si el carrito está vacío)
+    const shipping = items.length > 0 ? 500 : 0;
+    
+    // Calcular total
+    const total = subtotal + shipping;
+
+    console.log('Subtotal:', subtotal, 'Shipping:', shipping, 'Total:', total); // Debug
 
     if (items.length === 0) {
         cartItemsContainer.innerHTML = `
@@ -33,37 +54,33 @@ function renderCart() {
         checkoutBtn.disabled = true;
     } else {
         cartItemsContainer.innerHTML = items
-            .map(
-                (item) => `
+            .map((item) => {
+                console.log('Rendering item:', item); // Debug: ver cada item
+                return `
                 <div class="cart-item">
-                    <img src="${item.imagen || "https://via.placeholder.com/100x75"}" alt="${
-                    item.nombre
-                }">
+                    <img src="${item.product.imagen || "https://via.placeholder.com/100x75"}" alt="${item.product.nombre}">
                     <div class="item-details">
-                        <h3>${item.nombre}</h3>
-                        <p class="item-price">$${item.precio}</p>
+                        <h3>${item.product.nombre}</h3>
+                        <p class="item-price">$${item.product.precio}</p>
+                        <p class="item-subtotal">Subtotal: $${item.product.precio * item.quantity}</p>
                     </div>
                     <div class="quantity-controls">
-                        <button class="quantity-btn" onclick="window.updateItemQuantity(${
-                            item.id
-                        }, ${item.cantidad - 1})">-</button>
-                        <span>${item.cantidad}</span>
-                        <button class="quantity-btn" onclick="window.updateItemQuantity(${
-                            item.id
-                        }, ${item.cantidad + 1})">+</button>
-                        <button class="remove-btn" onclick="window.removeItem(${
-                            item.id
-                        })">🗑️</button>
+                        <button class="quantity-btn" onclick="window.updateItemQuantity(${item.product.id}, ${item.quantity - 1})">-</button>
+                        <span class="quantity">${item.quantity}</span>
+                        <button class="quantity-btn" onclick="window.updateItemQuantity(${item.product.id}, ${item.quantity + 1})">+</button>
+                        <button class="remove-btn" onclick="window.removeItem(${item.product.id})" title="Eliminar producto">🗑️</button>
                     </div>
                 </div>
-            `
-            )
+            `;
+            })
             .join("");
         checkoutBtn.disabled = false;
     }
 
-    subtotalElement.textContent = `$${total}`;
-    totalElement.textContent = `$${total}`;
+    // Actualizar valores en el DOM
+    subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
+    shippingElement.textContent = `$${shipping}`;
+    totalElement.textContent = `$${total.toFixed(2)}`;
 }
 
 (window as any).updateItemQuantity = (productId: number, newQuantity: number) => {

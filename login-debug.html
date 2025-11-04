@@ -77,11 +77,9 @@
                     log(`📧 Email: ${user.email}`);
                     log(`🎭 Rol: ${user.role}`);
                     
-                    // Guardar en localStorage
                     localStorage.setItem('foodstore_user', JSON.stringify(user));
                     log(`💾 Usuario guardado en localStorage`);
                     
-                    // Botones de navegación
                     status.innerHTML += `
                         <div style="margin-top: 15px;">
                             <button onclick="window.location.href='/src/pages/admin/adminHome/adminHome.html'" 
@@ -102,7 +100,6 @@
             }
         }
         
-        // Test inicial al cargar
         window.addEventListener('load', function() {
             log('🚀 Página cargada correctamente');
             log('📋 Credenciales pre-cargadas: admin@food.com / admin123');

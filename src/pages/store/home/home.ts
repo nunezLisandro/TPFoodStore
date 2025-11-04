@@ -1,5 +1,6 @@
 import { apiFetch } from "../../../api";
 import { addToCart, getCartItemCount } from "../../../utils/cart";
+import { logout } from "../../../utils/auth";
 
 
 const container = document.getElementById("products") as HTMLElement | null;
@@ -25,6 +26,7 @@ async function loadProducts() {
     if (loader) loader.style.display = "block";
 
     const products = await apiFetch("/productos");
+    console.log('Raw products from API:', products); // Debug: ver productos originales
 
     if (!products || !Array.isArray(products) || products.length === 0) {
       container.innerHTML = `<p class="empty">No hay productos disponibles 😕</p>`;
@@ -33,21 +35,34 @@ async function loadProducts() {
 
     container.innerHTML = products
       .map(
-        (p: any) => `
+        (p: any) => {
+          console.log('Individual product from API:', p); // Debug: ver cada producto
+          return `
         <div class="card">
           <img src="${p.imagen || "https://via.placeholder.com/200x150"}" alt="${p.nombre}">
           <h3>${p.nombre}</h3>
           <p class="price">$${p.precio}</p>
           <button class="add-btn" onclick="window.addToCart(${p.id})">Agregar</button>
         </div>
-      `
+      `;
+        }
       )
       .join("");
 
     (window as any).addToCart = (productId: number) => {
       const product = products.find((p: any) => p.id === productId);
+      console.log('Product found for cart:', product); // Debug
       if (product) {
-        addToCart(product);
+        // Asegurar que el producto tiene todas las propiedades necesarias
+        const cartProduct = {
+          id: product.id,
+          nombre: product.nombre,
+          precio: product.precio,
+          imagen: product.imagen,
+          stock: product.stock || 999 // Valor por defecto si no existe
+        };
+        console.log('Adding to cart:', cartProduct); // Debug
+        addToCart(cartProduct);
         updateCartCount();
       }
     };
@@ -61,8 +76,7 @@ async function loadProducts() {
 
 if (logoutBtn) {
   logoutBtn.addEventListener("click", () => {
-    localStorage.removeItem("user");
-    window.location.href = "/src/pages/auth/login/login.html";
+    logout(); // Usar la función logout de auth.ts que limpia todo
   });
 }
 

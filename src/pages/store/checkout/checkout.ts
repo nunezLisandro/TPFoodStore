@@ -11,7 +11,7 @@ const loadingOverlay = document.getElementById("loadingOverlay") as HTMLElement;
 const userInfo = document.getElementById("userInfo") as HTMLElement;
 
 // Constantes
-const SHIPPING_COST = 200; // Costo fijo de envío
+const SHIPPING_COST = 500; // Costo fijo de envío
 
 // --- Verificar sesión ---
 const userData = localStorage.getItem("user");
@@ -38,9 +38,9 @@ function loadOrderSummary() {
         .map(
             (item) => `
             <div class="order-item">
-                <span class="item-quantity">x${item.cantidad}</span>
-                <span class="item-name">${item.nombre}</span>
-                <span class="item-price">$${item.precio * item.cantidad}</span>
+                <span class="item-quantity">x${item.quantity}</span>
+                <span class="item-name">${item.product.nombre}</span>
+                <span class="item-price">$${item.product.precio * item.quantity}</span>
             </div>
         `
         )
@@ -73,9 +73,9 @@ checkoutForm.addEventListener("submit", async (e) => {
             body: JSON.stringify({
                 userId: user.id,
                 items: items.map(item => ({
-                    productId: item.id,
-                    quantity: item.cantidad,
-                    price: item.precio
+                    productId: item.product.id,
+                    quantity: item.quantity,
+                    price: item.product.precio
                 })),
                 shippingAddress: address,
                 phone,
