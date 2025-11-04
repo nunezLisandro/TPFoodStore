@@ -106,7 +106,7 @@ public class DataInitializer implements CommandLineRunner {
 
         if (bebidas != null) {
             // Bebidas
-            productRepository.save(new Product("Coca Cola", "Bebida cola 500ml", 
+            productRepository.save(new Product("Gaseosa", "Bebida cola 500ml", 
                                             new BigDecimal("800.00"), 25, 
                                             "https://images.unsplash.com/photo-1629203851122-3726ecdf080e", true, bebidas));
             
