@@ -39,6 +39,10 @@ h1, h2, h3 {
   text-align: center;
 }
 
+p {
+justify-content: center;
+text-align: center;
+}
 
 form {
   max-width: 400px;
