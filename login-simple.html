@@ -51,7 +51,6 @@
         
         console.log('Login script loaded, API_URL:', API_URL);
         
-        // Primero vamos a probar la conectividad
         async function testConnection() {
             console.log('Testing connection...');
             const messageDiv = document.getElementById('message');
@@ -84,7 +83,6 @@
             
             messageDiv.innerHTML = '<div style="color: blue;">Iniciando sesión...</div>';
             
-            // Primero probar conectividad
             const connected = await testConnection();
             if (!connected) {
                 messageDiv.innerHTML = '<div style="color: red;">❌ No se puede conectar al servidor</div>';
@@ -132,7 +130,6 @@
             }
         });
         
-        // Funciones de navegación
         window.goToAdmin = function() {
             console.log('Navegando a admin...');
             window.location.href = '/src/pages/admin/adminHome/adminHome.html';
@@ -143,7 +140,6 @@
             window.location.href = '/src/pages/store/home/home.html';
         };
         
-        // Funciones para llenar credenciales
         window.fillAdmin = function() {
             document.getElementById('email').value = 'admin@food.com';
             document.getElementById('password').value = 'admin123';
@@ -156,7 +152,6 @@
             console.log('Cliente credentials filled');
         };
         
-        // Llenar campos automáticamente con admin al cargar
         window.addEventListener('load', function() {
             fillAdmin();
             console.log('Page loaded, admin fields filled by default');

@@ -60,7 +60,6 @@
         };
 
         window.testAdminLogin = function() {
-            // Simular un admin creando un objeto de usuario admin
             const adminUser = {
                 id: 999,
                 name: 'Admin Test',
@@ -97,7 +96,6 @@
             window.location.href = '/src/pages/store/home/home.html';
         };
 
-        // Mostrar estado actual al cargar
         window.addEventListener('load', function() {
             const user = getUser();
             const result = document.getElementById('result');

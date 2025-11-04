@@ -18,7 +18,6 @@
             console.log('API_URL:', API_URL);
             
             try {
-                // Probar registro
                 const registerResult = await apiFetch('/auth/register', {
                     method: 'POST',
                     body: JSON.stringify({
@@ -30,7 +29,6 @@
                 
                 console.log('Register result:', registerResult);
                 
-                // Probar login
                 const loginResult = await apiFetch('/auth/login', {
                     method: 'POST',
                     body: JSON.stringify({

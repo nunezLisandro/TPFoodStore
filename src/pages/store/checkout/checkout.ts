@@ -2,7 +2,6 @@ import { apiFetch } from "../../../api";
 import { getCartItems, getCartTotal, clearCart } from "../../../utils/cart";
 import { getUser } from "../../../utils/auth";
 
-// Elementos del DOM
 const checkoutForm = document.getElementById("checkoutForm") as HTMLFormElement;
 const orderItemsContainer = document.getElementById("orderItems") as HTMLElement;
 const subtotalElement = document.getElementById("subtotal") as HTMLElement;
@@ -10,10 +9,8 @@ const totalElement = document.getElementById("total") as HTMLElement;
 const loadingOverlay = document.getElementById("loadingOverlay") as HTMLElement;
 const userInfo = document.getElementById("userInfo") as HTMLElement;
 
-// Constantes
-const SHIPPING_COST = 500; // Costo fijo de envío
+const SHIPPING_COST = 500;
 
-// --- Verificar sesión ---
 const userData = localStorage.getItem("user");
 if (!userData) {
     window.location.href = "/src/pages/auth/login/login.html";
@@ -22,7 +19,6 @@ if (!userData) {
     if (userInfo) userInfo.textContent = `👋 Hola, ${user.name || "usuario"}`;
 }
 
-// --- Cargar resumen del pedido ---
 function loadOrderSummary() {
     const items = getCartItems();
     const subtotal = getCartTotal();
@@ -33,7 +29,6 @@ function loadOrderSummary() {
         return;
     }
 
-    // Mostrar items
     orderItemsContainer.innerHTML = items
         .map(
             (item) => `
@@ -46,12 +41,10 @@ function loadOrderSummary() {
         )
         .join("");
 
-    // Actualizar totales
     subtotalElement.textContent = `$${subtotal}`;
     totalElement.textContent = `$${total}`;
 }
 
-// --- Manejar envío del formulario ---
 checkoutForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     
@@ -64,6 +57,11 @@ checkoutForm.addEventListener("submit", async (e) => {
     const items = getCartItems();
     const total = getCartTotal() + SHIPPING_COST;
     const user = getUser();
+
+    if (!user) {
+        alert("Error: Usuario no encontrado");
+        return;
+    }
 
     try {
         loadingOverlay.classList.add("visible");
@@ -87,10 +85,8 @@ checkoutForm.addEventListener("submit", async (e) => {
         });
 
         if (order && order.id) {
-            // Limpiar carrito
             clearCart();
             
-            // Guardar ID del pedido y redirigir a confirmación
             localStorage.setItem("lastOrderId", order.id);
             window.location.href = "/src/pages/store/confirmation/confirmation.html";
         } else {
@@ -103,5 +99,4 @@ checkoutForm.addEventListener("submit", async (e) => {
     }
 });
 
-// --- Inicialización ---
 loadOrderSummary();
