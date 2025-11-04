@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mis Pedidos</title>
+  <link rel="stylesheet" href="/src/style.css" />
+  <link rel="stylesheet" href="./orders.css" />
+</head>
+<body>
+  <div id="app">
+    <h1>Mis Pedidos</h1>
+    <div id="ordersContainer"></div>
+
+    
+    <div id="orderModal" class="modal hidden">
+      <div class="modal-content">
+        <button id="closeModal">✖</button>
+        <div id="orderDetails"></div>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="./orders.ts"></script>
+</body>
+</html>

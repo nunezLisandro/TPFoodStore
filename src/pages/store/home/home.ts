@@ -26,7 +26,6 @@ async function loadProducts() {
     if (loader) loader.style.display = "block";
 
     const products = await apiFetch("/productos");
-    console.log('Raw products from API:', products); // Debug: ver productos originales
 
     if (!products || !Array.isArray(products) || products.length === 0) {
       container.innerHTML = `<p class="empty">No hay productos disponibles 😕</p>`;
@@ -36,7 +35,6 @@ async function loadProducts() {
     container.innerHTML = products
       .map(
         (p: any) => {
-          console.log('Individual product from API:', p); // Debug: ver cada producto
           return `
         <div class="card">
           <img src="${p.imagen || "https://via.placeholder.com/200x150"}" alt="${p.nombre}">
@@ -51,7 +49,6 @@ async function loadProducts() {
 
     (window as any).addToCart = (productId: number) => {
       const product = products.find((p: any) => p.id === productId);
-      console.log('Product found for cart:', product); // Debug
       if (product) {
         // Asegurar que el producto tiene todas las propiedades necesarias
         const cartProduct = {
@@ -61,7 +58,6 @@ async function loadProducts() {
           imagen: product.imagen,
           stock: product.stock || 999 // Valor por defecto si no existe
         };
-        console.log('Adding to cart:', cartProduct); // Debug
         addToCart(cartProduct);
         updateCartCount();
       }

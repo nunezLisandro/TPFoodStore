@@ -22,16 +22,11 @@ if (!userData) {
 function renderCart() {
     const items = getCartItems();
     
-    console.log('Cart items:', items); // Debug: ver estructura de items
-    console.log('Raw localStorage cart:', localStorage.getItem('foodstore_cart')); // Debug: ver datos en localStorage
-    
     // Calcular subtotal
     const subtotal = items.reduce((sum, item) => {
-        console.log('Processing item for subtotal:', item); // Debug: ver cada item
         const precio = typeof item.product.precio === 'string' ? 
             parseFloat(item.product.precio) : item.product.precio || 0;
         const quantity = item.quantity || 0;
-        console.log('Precio:', precio, 'Quantity:', quantity); // Debug
         return sum + (precio * quantity);
     }, 0);
     
@@ -40,8 +35,6 @@ function renderCart() {
     
     // Calcular total
     const total = subtotal + shipping;
-
-    console.log('Subtotal:', subtotal, 'Shipping:', shipping, 'Total:', total); // Debug
 
     if (items.length === 0) {
         cartItemsContainer.innerHTML = `
@@ -55,7 +48,6 @@ function renderCart() {
     } else {
         cartItemsContainer.innerHTML = items
             .map((item) => {
-                console.log('Rendering item:', item); // Debug: ver cada item
                 return `
                 <div class="cart-item">
                     <img src="${item.product.imagen || "https://via.placeholder.com/100x75"}" alt="${item.product.nombre}">

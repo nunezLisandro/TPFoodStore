@@ -33,8 +33,6 @@ setTimeout(() => {
         });
 
         if (user && user.id) {
-          console.log('Login successful, user received:', user);
-          
           // Guardar usuario ANTES de redirigir
           loginUser(user);
           
@@ -43,16 +41,12 @@ setTimeout(() => {
           
           // Verificar que se guardó correctamente
           const savedUser = localStorage.getItem('user');
-          console.log('Saved user check:', savedUser);
           
           if (savedUser) {
-            console.log('User saved successfully, redirecting...');
             // Usar location.href que es más confiable
             if (user.role === "admin") {
-              console.log('Redirecting to admin...');
               window.location.href = "../../admin/adminHome/adminHome.html";
             } else {
-              console.log('Redirecting to store...');
               window.location.href = "../../store/home/home.html";
             }
           } else {

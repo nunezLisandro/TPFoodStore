@@ -5,23 +5,16 @@ const CART_STORAGE_KEY = 'foodstore_cart'; // Misma clave que usa cart.ts
 
 // Guardar datos del usuario en localStorage
 export function loginUser(userData: IUser): void {
-  console.log('loginUser called with:', userData);
-  
   // Obtener el usuario anterior (si existe)
   const previousUserData = localStorage.getItem(USER_STORAGE_KEY);
   const previousUser = previousUserData ? JSON.parse(previousUserData) : null;
   
-  console.log('Previous user:', previousUser);
-  console.log('New user:', userData);
-  
   // Siempre limpiar el carrito al hacer login (para evitar confusiones)
   // Esto asegura que cada sesión tenga un carrito limpio
   localStorage.removeItem(CART_STORAGE_KEY);
-  console.log('Carrito limpiado al iniciar sesión');
   
   // Guardar el nuevo usuario
   localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userData));
-  console.log('Usuario guardado en localStorage');
   
   // Disparar evento personalizado para notificar que el carrito cambió
   window.dispatchEvent(new Event('cartUpdated'));
