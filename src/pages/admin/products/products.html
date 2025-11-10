@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Gestión de Productos - Food Store</title>
+  <link rel="stylesheet" href="/src/style.css" />
+  <style>
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background: #2d3748;
+      color: white;
+      margin-bottom: 2rem;
+    }
+    .back-btn {
+      background: #4a5568;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .products-container {
+      padding: 0 1rem;
+    }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .product-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .product-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.5rem;
+    }
+    .product-title {
+      font-weight: bold;
+      color: #2d3748;
+    }
+    .product-price {
+      color: #38a169;
+      font-weight: bold;
+    }
+    .stock-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 1rem 0;
+      padding: 0.5rem;
+      background: #f7fafc;
+      border-radius: 4px;
+    }
+    .stock-value {
+      font-weight: bold;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+    }
+    .stock-low { background: #fed7d7; color: #c53030; }
+    .stock-medium { background: #feebc8; color: #dd6b20; }
+    .stock-high { background: #c6f6d5; color: #38a169; }
+    .stock-controls {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .stock-input {
+      width: 80px;
+      padding: 0.25rem;
+      border: 1px solid #cbd5e0;
+      border-radius: 4px;
+      text-align: center;
+    }
+    .btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .btn-primary {
+      background: #3182ce;
+      color: white;
+    }
+    .btn-success {
+      background: #38a169;
+      color: white;
+    }
+    .btn-warning {
+      background: #dd6b20;
+      color: white;
+    }
+    .btn:hover {
+      opacity: 0.8;
+    }
+    .filter-section {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .filter-input, .filter-select {
+      padding: 0.5rem;
+      border: 1px solid #cbd5e0;
+      border-radius: 4px;
+    }
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: #718096;
+    }
+    .no-products {
+      text-align: center;
+      padding: 2rem;
+      color: #718096;
+      background: #f7fafc;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <header class="admin-header">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="/src/pages/admin/adminHome/adminHome.html" class="back-btn">
+          ← Volver al Panel
+        </a>
+        <h1>📦 Gestión de Productos</h1>
+      </div>
+      <div class="user-info">
+        <span id="userInfo">👋 Administrador</span>
+      </div>
+    </header>
+
+    <main class="products-container">
+      <div class="filter-section">
+        <input 
+          type="text" 
+          id="searchInput" 
+          placeholder="Buscar productos..." 
+          class="filter-input"
+        />
+        <select id="categoryFilter" class="filter-select">
+          <option value="">Todas las categorías</option>
+        </select>
+        <select id="stockFilter" class="filter-select">
+          <option value="">Todos los stocks</option>
+          <option value="low">Stock bajo (≤5)</option>
+          <option value="medium">Stock medio (6-20)</option>
+          <option value="high">Stock alto (>20)</option>
+        </select>
+        <button id="refreshBtn" class="btn btn-primary">🔄 Actualizar</button>
+      </div>
+
+      <div id="loading" class="loading">
+        Cargando productos...
+      </div>
+
+      <div id="productsGrid" class="products-grid" style="display: none;">
+      </div>
+
+      <div id="noProducts" class="no-products" style="display: none;">
+        <h3>No se encontraron productos</h3>
+        <p>No hay productos que coincidan con los filtros aplicados.</p>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="/src/pages/admin/products/products.ts"></script>
+</body>
+</html>

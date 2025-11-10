@@ -30,7 +30,7 @@ if (categoriesCard) {
 
 if (productsCard) {
   productsCard.addEventListener('click', () => {
-    window.location.href = '/src/pages/admin/adminDashboard/dashboard.html?tab=products';
+    window.location.href = '/src/pages/admin/products/products.html';
   });
 }
 

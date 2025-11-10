@@ -6,66 +6,281 @@
 }
 
 body {
-    background: linear-gradient(135deg, #ffe6cc, #fff);
+    background: linear-gradient(135deg, #ff9a3c10, #4CAF5020, #ff9a3c05);
     color: #333;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 2rem;
+    padding: 1rem;
+    animation: backgroundShift 3s ease-in-out;
+}
+
+@keyframes backgroundShift {
+    0% { background: linear-gradient(135deg, #ff9a3c20, #4CAF5030, #ff9a3c10); }
+    100% { background: linear-gradient(135deg, #ff9a3c10, #4CAF5020, #ff9a3c05); }
 }
 
 .confirmation-container {
     width: 100%;
-    max-width: 600px;
+    max-width: 700px;
 }
 
 .confirmation-card {
     background: white;
-    padding: 3rem 2rem;
-    border-radius: 16px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     text-align: center;
+    animation: slideInUp 0.6s ease-out;
+    border: 1px solid rgba(255, 154, 60, 0.1);
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.success-animation {
+    position: relative;
+    margin-bottom: 2rem;
+    display: inline-block;
 }
 
 .success-icon {
-    width: 80px;
-    height: 80px;
-    background: #ff9a3c;
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
     color: white;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2.5rem;
-    margin: 0 auto 2rem;
-    animation: scaleIn 0.5s ease-out;
+    font-size: 3rem;
+    font-weight: bold;
+    margin: 0 auto;
+    animation: successPop 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow: 0 10px 30px rgba(76, 175, 80, 0.3);
 }
 
-@keyframes scaleIn {
-    from {
+.success-ripple {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    border: 3px solid #4CAF50;
+    border-radius: 50%;
+    animation: ripple 1.5s ease-out infinite;
+    opacity: 0.6;
+}
+
+@keyframes successPop {
+    0% {
         transform: scale(0);
+        rotation: -180deg;
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+        rotation: 0deg;
+    }
+}
+
+@keyframes ripple {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.6;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(2);
+        opacity: 0;
+    }
+}
+
+.success-title {
+    color: #4CAF50;
+    margin-bottom: 0.5rem;
+    font-size: 2.5rem;
+    font-weight: 700;
+    animation: fadeInDown 0.8s ease-out 0.2s both;
+}
+
+.success-subtitle {
+    color: #333;
+    margin-bottom: 2rem;
+    font-size: 1.3rem;
+    font-weight: 400;
+    animation: fadeInDown 0.8s ease-out 0.4s both;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
     }
     to {
-        transform: scale(1);
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
-h1 {
-    color: #333;
-    margin-bottom: 1rem;
-    font-size: 2rem;
+.order-info {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    padding: 1.5rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    border: 2px solid #4CAF50;
+    animation: fadeInUp 0.8s ease-out 0.6s both;
 }
 
 .order-number {
-    color: #666;
-    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
     font-size: 1.1rem;
 }
 
-.order-number span {
+.label {
+    color: #666;
+    font-weight: 500;
+}
+
+.order-id {
+    color: #4CAF50;
+    font-weight: bold;
+    font-size: 1.3rem;
+    padding: 0.3rem 0.8rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.order-status {
+    margin: 0;
+}
+
+.status-badge {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.order-summary {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    text-align: left;
+    animation: fadeInUp 0.8s ease-out 0.8s both;
+}
+
+.order-summary h3 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.order-items {
+    margin-bottom: 1rem;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.order-item:last-child {
+    border-bottom: none;
+}
+
+.item-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.item-name {
+    font-weight: 500;
+    color: #333;
+}
+
+.item-quantity {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.item-price {
     color: #ff9a3c;
     font-weight: bold;
+}
+
+.order-total {
+    border-top: 2px solid #4CAF50;
+    padding-top: 1rem;
+    text-align: center;
+}
+
+.total-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.total-final {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.message-box {
+    background: linear-gradient(135deg, #e8f5e8, #f0f8f0);
+    border: 2px solid #4CAF50;
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    animation: fadeInUp 0.8s ease-out 1s both;
+}
+
+.message {
+    color: #2e7d32;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.delivery-info {
+    color: #ff9a3c;
+    font-weight: 500;
+    margin: 0;
 }
 
 .message {
@@ -102,24 +317,159 @@ h1 {
     margin-bottom: 0;
 }
 
+.next-steps {
+    margin-bottom: 2rem;
+    animation: fadeInUp 0.8s ease-out 1.2s both;
+}
+
+.next-steps h3 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+}
+
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.step {
+    background: white;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border: 1px solid #e9ecef;
+    transition: transform 0.3s ease;
+}
+
+.step:hover {
+    transform: translateY(-2px);
+}
+
+.step-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.step-text {
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
 .buttons {
     display: flex;
     gap: 1rem;
     justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    animation: fadeInUp 0.8s ease-out 1.4s both;
+}
+
+.primary-btn, .secondary-btn {
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    min-width: 200px;
+    text-align: center;
 }
 
 .primary-btn {
-    background: #ff9a3c;
+    background: linear-gradient(135deg, #ff9a3c, #ff8c00);
     color: white;
-    text-decoration: none;
-    padding: 1rem 2rem;
-    border-radius: 8px;
-    font-weight: bold;
-    transition: 0.2s;
+    box-shadow: 0 8px 20px rgba(255, 154, 60, 0.3);
 }
 
 .primary-btn:hover {
-    background: #ff8624;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(255, 154, 60, 0.3);
+    box-shadow: 0 12px 30px rgba(255, 154, 60, 0.4);
+}
+
+.secondary-btn {
+    background: white;
+    color: #ff9a3c;
+    border: 2px solid #ff9a3c;
+}
+
+.secondary-btn:hover {
+    background: #ff9a3c;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.celebration-message {
+    background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+    border-radius: 15px;
+    padding: 1rem;
+    animation: celebration 0.8s ease-out 1.6s both;
+}
+
+.celebration-message p {
+    color: #ff9a3c;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+@keyframes celebration {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .confirmation-container {
+        padding: 1rem;
+    }
+    
+    .success-icon {
+        width: 80px;
+        height: 80px;
+        font-size: 2.5rem;
+    }
+    
+    .success-title {
+        font-size: 2rem;
+    }
+    
+    .success-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .order-info, .order-summary {
+        padding: 1rem;
+    }
+    
+    .buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .primary-btn, .secondary-btn {
+        min-width: 250px;
+    }
+    
+    .steps-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .order-number {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
 }

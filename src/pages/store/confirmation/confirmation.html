@@ -2,29 +2,76 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>¡Pedido Confirmado! - Food Store</title>
+    <title>¡Compra Finalizada! - Food Store</title>
     <link rel="stylesheet" href="./confirmation.css">
+    <link rel="stylesheet" href="/src/style.css">
 </head>
 <body>
     <main class="confirmation-container">
         <div class="confirmation-card">
-            <div class="success-icon">✓</div>
-            <h1>¡Gracias por tu pedido!</h1>
-            <p class="order-number">Número de pedido: <span id="orderId"></span></p>
-            <p class="message">
-                Hemos recibido tu pedido correctamente. Te enviaremos actualizaciones
-                sobre el estado de tu pedido por correo electrónico.
-            </p>
-            <div class="next-steps">
-                <h3>Próximos pasos:</h3>
-                <ol>
-                    <li>Recibirás un correo de confirmación con los detalles de tu pedido</li>
-                    <li>Te notificaremos cuando tu pedido esté en camino</li>
-                    <li>Prepara el método de pago seleccionado para cuando llegue el repartidor</li>
-                </ol>
+            <div class="success-animation">
+                <div class="success-icon">✓</div>
+                <div class="success-ripple"></div>
             </div>
+            
+            <h1 class="success-title">¡Compra Finalizada!</h1>
+            <h2 class="success-subtitle">¡Gracias por tu pedido!</h2>
+            
+            <div class="order-info">
+                <p class="order-number">
+                    <span class="label">Número de pedido:</span>
+                    <span id="orderId" class="order-id">#000</span>
+                </p>
+                <p class="order-status">
+                    <span class="status-badge">✓ Pedido Confirmado</span>
+                </p>
+            </div>
+
+            <div class="order-summary" id="orderSummary">
+                <h3>📋 Resumen del pedido</h3>
+                <div id="orderItems" class="order-items"></div>
+                <div id="orderTotal" class="order-total"></div>
+            </div>
+
+            <div class="message-box">
+                <p class="message">
+                    🎉 ¡Tu pedido ha sido procesado exitosamente! El stock se ha actualizado 
+                    y tu carrito ha sido vaciado. 
+                </p>
+                <p class="delivery-info">
+                    📦 Te contactaremos pronto para coordinar la entrega.
+                </p>
+            </div>
+
+            <div class="next-steps">
+                <h3>📌 Próximos pasos:</h3>
+                <div class="steps-grid">
+                    <div class="step">
+                        <div class="step-icon">📧</div>
+                        <div class="step-text">Recibirás confirmación por correo</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">🚚</div>
+                        <div class="step-text">Te notificaremos cuando esté en camino</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">💳</div>
+                        <div class="step-text">Prepara el método de pago seleccionado</div>
+                    </div>
+                </div>
+            </div>
+
             <div class="buttons">
-                <a href="/src/pages/store/home/home.html" class="primary-btn">Volver a la tienda</a>
+                <button id="continueShoppingBtn" class="primary-btn">
+                    🛒 Continuar Comprando
+                </button>
+                <a href="/src/pages/store/home/home.html" class="secondary-btn">
+                    🏠 Ir al Inicio
+                </a>
+            </div>
+
+            <div class="celebration-message">
+                <p>🎊 ¡Gracias por elegirnos! 🎊</p>
             </div>
         </div>
     </main>

@@ -22,7 +22,7 @@ async function loadOrders() {
   }
 
   try {
-    const orders = await apiFetch(`/orders/user/${user.id}`);
+    const orders = await apiFetch(`/pedidos`);
     if (!orders.length) {
       container.innerHTML = `<p>No tenés pedidos todavía.</p>`;
       return;
@@ -37,7 +37,7 @@ async function loadOrders() {
 }
 
 function renderOrderCard(order: any) {
-  const state = STATES[order.status] || { label: order.status, emoji: "❔", color: "#bdc3c7" };
+  const state = STATES[order.statusValue] || { label: order.statusValue, emoji: "❔", color: "#bdc3c7" };
   const products = order.items.slice(0, 3).map((i: any) => i.productName).join(", ");
   const remaining = order.items.length > 3 ? `+${order.items.length - 3} más` : "";
 
@@ -64,8 +64,8 @@ container.addEventListener("click", (e) => {
 closeModal.addEventListener("click", () => modal.classList.add("hidden"));
 
 async function showOrderDetail(id: string) {
-  const order = await apiFetch(`/orders/${id}`);
-  const state = STATES[order.status] || { label: order.status, emoji: "❔", color: "#bdc3c7" };
+  const order = await apiFetch(`/pedidos/${id}`);
+  const state = STATES[order.statusValue] || { label: order.statusValue, emoji: "❔", color: "#bdc3c7" };
 
   detailsBox.innerHTML = `
     <h2>Pedido #${order.id}</h2>
