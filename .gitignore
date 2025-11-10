@@ -88,3 +88,8 @@ node_modules/
 
 # TernJS port file
 .tern-port
+
+# H2 Database files
+data/
+*.mv.db
+*.trace.db

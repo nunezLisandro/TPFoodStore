@@ -104,6 +104,47 @@ public class ProductService {
         return false;
     }
 
+    public Product addStock(Long productId, Integer stockToAdd) {
+        Optional<Product> productOpt = productRepository.findById(productId);
+        if (productOpt.isEmpty()) {
+            throw new RuntimeException("Producto no encontrado con ID: " + productId);
+        }
+        
+        Product product = productOpt.get();
+        if (stockToAdd == null || stockToAdd <= 0) {
+            throw new RuntimeException("La cantidad a agregar debe ser mayor a cero");
+        }
+        
+        product.setStock(product.getStock() + stockToAdd);
+        return productRepository.save(product);
+    }
+
+    public Product reduceStock(Long productId, Integer quantityToReduce) {
+        Optional<Product> productOpt = productRepository.findById(productId);
+        if (productOpt.isEmpty()) {
+            throw new RuntimeException("Producto no encontrado con ID: " + productId);
+        }
+        
+        Product product = productOpt.get();
+        if (quantityToReduce == null || quantityToReduce <= 0) {
+            throw new RuntimeException("La cantidad a reducir debe ser mayor a cero");
+        }
+        
+        if (product.getStock() < quantityToReduce) {
+            throw new RuntimeException("Stock insuficiente para el producto: " + product.getNombre() + 
+                ". Stock disponible: " + product.getStock() + ", cantidad solicitada: " + quantityToReduce);
+        }
+        
+        product.setStock(product.getStock() - quantityToReduce);
+        
+        // Si el stock llega a 0, marcar como no disponible
+        if (product.getStock() == 0) {
+            product.setDisponible(false);
+        }
+        
+        return productRepository.save(product);
+    }
+
     private void validateProduct(Product product) {
         if (product.getNombre() == null || product.getNombre().trim().isEmpty()) {
             throw new RuntimeException("El nombre del producto es requerido");

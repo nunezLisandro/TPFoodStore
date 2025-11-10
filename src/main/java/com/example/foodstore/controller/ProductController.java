@@ -109,6 +109,35 @@ public class ProductController {
         }
     }
 
+    @PostMapping("/{id}/add-stock")
+    public ResponseEntity<?> addStock(@PathVariable Long id, @RequestBody StockUpdateRequest request) {
+        try {
+            Product product = productService.addStock(id, request.getStock());
+            return ResponseEntity.ok(product);
+        } catch (RuntimeException e) {
+            if (e.getMessage().contains("no encontrado")) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+        }
+    }
+
+    @PutMapping("/{id}/reduce-stock")
+    public ResponseEntity<?> reduceStock(@PathVariable Long id, @RequestBody StockReduceRequest request) {
+        try {
+            Product product = productService.reduceStock(id, request.getCantidad());
+            return ResponseEntity.ok(product);
+        } catch (RuntimeException e) {
+            if (e.getMessage().contains("no encontrado")) {
+                return ResponseEntity.notFound().build();
+            }
+            if (e.getMessage().contains("insuficiente")) {
+                return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+            }
+            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+        }
+    }
+
     private Product convertToProduct(ProductRequest request) {
         Product product = new Product();
         product.setNombre(request.getNombre());
@@ -125,6 +154,13 @@ public class ProductController {
         }
         
         return product;
+    }
+
+    private static class StockReduceRequest {
+        private Integer cantidad;
+        
+        public Integer getCantidad() { return cantidad; }
+        public void setCantidad(Integer cantidad) { this.cantidad = cantidad; }
     }
 
     private static class ErrorResponse {
