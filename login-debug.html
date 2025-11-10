@@ -22,7 +22,7 @@
     <div id="status" class="status">Listo para iniciar sesión...</div>
     
     <h3>Debug Info:</h3>
-    <div>Backend URL: http://localhost:8081/api</div>
+    <div>Backend URL: http://localhost:8080/api</div>
     <div>Frontend URL: http://localhost:5174</div>
     
     <script>
@@ -55,12 +55,12 @@
             const password = document.getElementById('password').value;
             
             log(`🔍 Iniciando login para: ${email}`);
-            log(`📡 URL del backend: http://localhost:8081/api`);
+            log(`📡 URL del backend: http://localhost:8080/api`);
             
             try {
                 log('🌐 Haciendo petición HTTP...');
                 
-                const response = await fetch('http://localhost:8081/api/auth/login', {
+                const response = await fetch('http://localhost:8080/api/auth/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

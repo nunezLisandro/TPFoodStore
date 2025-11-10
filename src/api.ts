@@ -1,4 +1,4 @@
-export const API_URL = (import.meta.env.VITE_API_URL as string) || "http://localhost:8081/api";
+export const API_URL = (import.meta.env.VITE_API_URL as string) || "http://localhost:8080/api";
 
 try {
   console.info('[api] API_URL =', API_URL);
