@@ -15,7 +15,49 @@ body {
   color: var(--text-dark);
   font-family: "Inter", sans-serif;
   margin: 0;
+  padding: 0;
+}
+
+.admin-nav {
+  background: var(--primary);
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.nav-brand h2 {
+  margin: 0;
+  color: white;
+}
+
+.nav-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-actions .btn {
+  background: rgba(255,255,255,0.2);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+
+.nav-actions .btn:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+.admin-container {
   padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.subtitle {
+  text-align: center;
+  color: #666;
+  margin-bottom: 2rem;
 }
 
 body.dark {
@@ -47,6 +89,42 @@ body.dark .order-card {
 .order-card:hover {
   border-color: var(--primary);
   transform: translateY(-2px);
+}
+
+.admin-actions {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.admin-actions .btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+
+.status-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+}
+
+.status-controls select {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  background: white;
+  min-width: 180px;
+}
+
+.status-controls .btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
 }
 
 .order-header {

@@ -15,18 +15,11 @@ try {
 }
 
 // Navegación
-const categoriesCard = document.getElementById('categoriesCard');
 const productsCard = document.getElementById('productsCard');
 const ordersCard = document.getElementById('ordersCard');
 const usersCard = document.getElementById('usersCard');
 const storeCard = document.getElementById('storeCard');
 const logoutBtn = document.getElementById('logoutBtn');
-
-if (categoriesCard) {
-  categoriesCard.addEventListener('click', () => {
-    window.location.href = '/src/pages/admin/adminDashboard/dashboard.html?tab=categories';
-  });
-}
 
 if (productsCard) {
   productsCard.addEventListener('click', () => {
@@ -36,7 +29,7 @@ if (productsCard) {
 
 if (ordersCard) {
   ordersCard.addEventListener('click', () => {
-    window.location.href = '/src/pages/admin/adminDashboard/dashboard.html?tab=orders';
+    window.location.href = '/src/pages/admin/orders/orders.html';
   });
 }
 

@@ -2,14 +2,32 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Mis Pedidos</title>
+  <title>Admin - Gestión de Pedidos</title>
   <link rel="stylesheet" href="/src/style.css" />
   <link rel="stylesheet" href="./orders.css" />
 </head>
 <body>
   <div id="app">
-    <h1>Mis Pedidos</h1>
-    <div id="ordersContainer"></div>
+    <nav class="admin-nav">
+      <div class="nav-brand">
+        <h2>🛒 FoodStore Admin</h2>
+      </div>
+      <div class="nav-user" id="userInfo">Administrador</div>
+      <div class="nav-actions">
+        <button onclick="window.location.href='/src/pages/admin/adminHome/adminHome.html'" class="btn btn-secondary">
+          🏠 Inicio
+        </button>
+        <button onclick="window.location.href='/src/pages/admin/products/products.html'" class="btn btn-secondary">
+          📦 Productos
+        </button>
+      </div>
+    </nav>
+
+    <div class="admin-container">
+      <h1>📋 Gestión de Pedidos</h1>
+      <p class="subtitle">Administra los pedidos de los clientes</p>
+      <div id="ordersContainer"></div>
+    </div>
 
     
     <div id="orderModal" class="modal hidden">

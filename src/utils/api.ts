@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = 'http://localhost:8081/api';
 
 // Función genérica para hacer peticiones HTTP
 async function apiRequest<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
