@@ -183,4 +183,9 @@ public class Pedido {
     public String getStatusValue() {
         return status != null ? status.getValue() : Status.PENDING.getValue();
     }
+    
+    // Get user name for JSON serialization
+    public String getUserName() {
+        return user != null ? user.getName() : "Usuario desconocido";
+    }
 }
