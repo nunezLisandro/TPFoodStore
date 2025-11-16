@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Gestión de Usuarios</title>
+    <link rel="stylesheet" href="/src/style.css" />
+    <link rel="stylesheet" href="/src/pages/admin/users/users.css" />
+</head>
+<body>
+    <div id="app">
+        <nav class="admin-nav">
+            <div class="nav-brand">
+                <h2>🛒 FoodStore Admin</h2>
+            </div>
+            <div class="nav-user" id="userInfo">Administrador</div>
+            <div class="nav-actions">
+                <button id="backBtn" class="btn btn-secondary">
+                    🏠 Inicio
+                </button>
+                <button onclick="window.location.href='/src/pages/admin/products/products.html'" class="btn btn-secondary">
+                    📦 Productos
+                </button>
+                <button onclick="window.location.href='/src/pages/admin/orders/orders.html'" class="btn btn-secondary">
+                    📋 Pedidos
+                </button>
+                <button id="logoutBtn" class="btn btn-danger">
+                    Cerrar Sesión
+                </button>
+            </div>
+        </nav>
+
+        <div class="admin-container">
+            <h1>👥 Gestión de Usuarios</h1>
+            <p class="subtitle">Administra los usuarios del sistema</p>
+
+            <!-- Filtros -->
+            <div class="filters-section">
+                <div class="filter-group">
+                    <label for="roleFilter">Filtrar por rol:</label>
+                    <select id="roleFilter">
+                        <option value="all">Todos los usuarios</option>
+                        <option value="cliente">Clientes</option>
+                        <option value="admin">Administradores</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loading-state" class="loading-state">
+                <div class="loading-spinner"></div>
+                <p>Cargando usuarios...</p>
+            </div>
+
+            <!-- Users Container -->
+            <div id="users-grid" class="users-grid"></div>
+
+            <!-- Estadísticas -->
+            <div class="stats-section" id="statsSection">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalUsers">0</div>
+                    <div class="stat-label">Total Usuarios</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalClients">0</div>
+                    <div class="stat-label">Clientes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalAdmins">0</div>
+                    <div class="stat-label">Administradores</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirmation Modal -->
+        <div id="confirmModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="confirmTitle">Confirmar Acción</h3>
+                    <button id="closeConfirmModal">✖</button>
+                </div>
+                <div class="modal-body">
+                    <p id="confirmMessage">¿Estás seguro de realizar esta acción?</p>
+                </div>
+                <div class="modal-actions">
+                    <button id="confirmCancel" class="btn btn-secondary">Cancelar</button>
+                    <button id="confirmAction" class="btn btn-danger">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./users.ts"></script>
+</body>
+</html>

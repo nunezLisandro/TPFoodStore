@@ -2,7 +2,7 @@ import { getUser, logout } from "@utils/auth";
 
 const user = getUser();
 
-if (!user || user.role !== "ADMIN") {
+if (!user || user.role !== "admin") {
   window.location.href = "/src/pages/auth/login/login.html";
 }
 

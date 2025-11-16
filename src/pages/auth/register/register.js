@@ -1,0 +1,67 @@
+import { apiFetch, API_URL } from "../../../api";
+const form = document.getElementById('registerForm');
+const errorBox = document.getElementById('registerError');
+function showError(msg) {
+    if (errorBox) {
+        errorBox.textContent = msg;
+        errorBox.classList.add('visible');
+        errorBox.style.color = '#d63031'; // rojo para errores
+    }
+    else
+        alert(msg);
+}
+function showSuccess(msg) {
+    if (errorBox) {
+        errorBox.textContent = msg;
+        errorBox.classList.add('visible');
+        errorBox.style.color = '#00b894'; // verde para éxito
+    }
+    else
+        alert(msg);
+}
+if (form) {
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        // Limpiar errores anteriores
+        if (errorBox) {
+            errorBox.classList.remove('visible');
+        }
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const emailRe = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+        if (!name)
+            return showError('Nombre requerido');
+        if (!emailRe.test(email))
+            return showError('Email inválido');
+        if (password.length < 6)
+            return showError('La contraseña debe tener al menos 6 caracteres');
+        try {
+            const body = { name, email, password };
+            // debug logs to help diagnose failed requests
+            console.info('[register] POST', `${API_URL}/auth/register`, body);
+            const user = await apiFetch('/auth/register', {
+                method: 'POST',
+                body: JSON.stringify(body),
+            });
+            console.info('[register] response', user);
+            if (user && user.id) {
+                showSuccess('✅ Registro exitoso! Redirigiendo al login...');
+                // Espera un segundo para mostrar el mensaje
+                setTimeout(() => {
+                    window.location.href = '/src/pages/auth/login/login.html';
+                }, 1500);
+            }
+            else {
+                showError('Error al registrar usuario');
+            }
+        }
+        catch (err) {
+            // Show full error (backend message or whole body) and log to console
+            const msg = err?.message || 'Error en el registro';
+            // eslint-disable-next-line no-console
+            console.error('[register] error', err);
+            showError(msg);
+        }
+    });
+}

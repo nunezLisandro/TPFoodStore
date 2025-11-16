@@ -1,7 +1,6 @@
 import { apiFetch } from "../../../api";
 import { requireAdmin } from "../../../utils/auth";
 
-// Verificar que el usuario sea administrador
 try {
   const user = requireAdmin();
   const userInfo = document.getElementById('userInfo');
@@ -17,13 +16,110 @@ const modal = document.getElementById("orderModal")!;
 const detailsBox = document.getElementById("orderDetails")!;
 const closeModal = document.getElementById("closeModal")!;
 
-// Colores y emojis por estado
 const STATES: Record<string, { label: string; emoji: string; color: string }> = {
   pending: { label: "Pendiente", emoji: "⏳", color: "#f1c40f" },
   processing: { label: "En preparación", emoji: "👨‍🍳", color: "#3498db" },
   completed: { label: "Entregado", emoji: "✅", color: "#2ecc71" },
   cancelled: { label: "Cancelado", emoji: "❌", color: "#e74c3c" },
 };
+
+// Función para reproducir sonidos de notificación
+function playNotificationSound(type: 'success' | 'error' | 'info' | 'cancelled') {
+  // Crear contexto de audio
+  const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+  
+  const playTone = (frequency: number, duration: number, delay: number = 0) => {
+    setTimeout(() => {
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+      oscillator.type = 'sine';
+      
+      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+      
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + duration);
+    }, delay);
+  };
+
+  // Diferentes sonidos según el tipo
+  switch (type) {
+    case 'success':
+      // Sonido de éxito (do-mi-sol)
+      playTone(523.25, 0.15, 0);    // Do
+      playTone(659.25, 0.15, 100);  // Mi
+      playTone(783.99, 0.25, 200);  // Sol
+      break;
+    case 'cancelled':
+      // Sonido especial para cancelación con restauración de stock (fa-re-la)
+      playTone(349.23, 0.2, 0);     // Fa
+      playTone(293.66, 0.15, 150);  // Re
+      playTone(440.00, 0.25, 250);  // La (sonido de "restauración")
+      break;
+    case 'error':
+      // Sonido de error (dos tonos bajos)
+      playTone(220, 0.2, 0);
+      playTone(196, 0.3, 150);
+      break;
+    case 'info':
+      // Sonido informativo (un tono suave)
+      playTone(440, 0.2, 0);
+      break;
+  }
+}
+
+// Función para mostrar notificación visual temporal
+function showTemporaryNotification(message: string, type: 'success' | 'error' | 'info') {
+  // Eliminar notificación existente si hay una
+  const existingNotification = document.querySelector('.temp-notification');
+  if (existingNotification) {
+    existingNotification.remove();
+  }
+
+  // Crear nueva notificación
+  const notification = document.createElement('div');
+  notification.className = `temp-notification ${type}`;
+  notification.textContent = message;
+  
+  // Estilos CSS inline
+  notification.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: ${type === 'success' ? '#2ecc71' : type === 'error' ? '#e74c3c' : '#3498db'};
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 10000;
+    font-weight: 500;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    max-width: 300px;
+  `;
+
+  document.body.appendChild(notification);
+
+  // Animación de entrada
+  setTimeout(() => {
+    notification.style.transform = 'translateX(0)';
+  }, 10);
+
+  // Eliminar después de 3 segundos
+  setTimeout(() => {
+    notification.style.transform = 'translateX(100%)';
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
+      }
+    }, 300);
+  }, 3000);
+}
 
 async function loadOrders() {
   try {
@@ -36,15 +132,19 @@ async function loadOrders() {
       return;
     }
 
-    // Ordenar pedidos por fecha (más recientes primero)
     const sortedOrders = orders.sort((a: any, b: any) => new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime());
 
     container.innerHTML = sortedOrders
       .map((o: any) => renderOrderCard(o))
       .join("");
+      
+    // Sonido sutil cuando se cargan los pedidos
+    playNotificationSound('info');
   } catch (err) {
     console.error('Admin: Error cargando pedidos:', err);
     container.innerHTML = `<p>Error al cargar pedidos: ${err}</p>`;
+    playNotificationSound('error');
+    showTemporaryNotification('❌ Error al cargar los pedidos', 'error');
   }
 }
 
@@ -144,7 +244,8 @@ async function changeOrderStatus(orderId: string, currentStatus: string) {
   if (statusIndex >= 0 && statusIndex < statusOptions.length) {
     newStatus = statusOptions[statusIndex];
   } else {
-    alert('Opción inválida');
+    playNotificationSound('error');
+    showTemporaryNotification('❌ Opción inválida', 'error');
     return;
   }
 
@@ -157,11 +258,20 @@ async function changeOrderStatus(orderId: string, currentStatus: string) {
       body: JSON.stringify({ status: newStatus })
     });
 
-    alert(`✅ Estado del pedido #${orderId} actualizado a: ${STATES[newStatus].label}`);
-    await loadOrders(); // Recargar la lista
+    // Sonido especial para pedidos cancelados
+    if (newStatus === 'cancelled') {
+      playNotificationSound('cancelled');
+      showTemporaryNotification(`🔄 Pedido #${orderId} cancelado y stock restaurado automáticamente`, 'success');
+    } else {
+      playNotificationSound('success');
+      showTemporaryNotification(`✅ Estado del pedido #${orderId} actualizado a: ${STATES[newStatus].label}`, 'success');
+    }
+    
+    await loadOrders();
   } catch (error) {
     console.error('Error actualizando estado:', error);
-    alert('❌ Error al actualizar el estado del pedido');
+    playNotificationSound('error');
+    showTemporaryNotification('❌ Error al actualizar el estado del pedido', 'error');
   }
 }
 
@@ -179,12 +289,21 @@ async function updateOrderStatus(orderId: string) {
       body: JSON.stringify({ status: newStatus })
     });
 
-    alert(`✅ Estado del pedido #${orderId} actualizado a: ${STATES[newStatus].label}`);
-    modal.classList.add("hidden"); // Cerrar modal
-    await loadOrders(); // Recargar la lista
+    // Sonido especial para pedidos cancelados
+    if (newStatus === 'cancelled') {
+      playNotificationSound('cancelled');
+      showTemporaryNotification(`🔄 Pedido #${orderId} cancelado y stock restaurado automáticamente`, 'success');
+    } else {
+      playNotificationSound('success');
+      showTemporaryNotification(`✅ Estado del pedido #${orderId} actualizado a: ${STATES[newStatus].label}`, 'success');
+    }
+    
+    modal.classList.add("hidden");
+    await loadOrders();
   } catch (error) {
     console.error('Error actualizando estado:', error);
-    alert('❌ Error al actualizar el estado del pedido');
+    playNotificationSound('error');
+    showTemporaryNotification('❌ Error al actualizar el estado del pedido', 'error');
   }
 }
 

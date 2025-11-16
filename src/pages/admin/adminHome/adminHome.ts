@@ -1,20 +1,15 @@
 import { getUser, logout, requireAdmin } from "../../../utils/auth";
 
-// Verificar que el usuario sea administrador
 try {
   const user = requireAdmin();
-  
-  // Actualizar información del usuario
   const userInfo = document.getElementById('userInfo');
   if (userInfo) {
     userInfo.textContent = `👋 ${user.name}`;
   }
 } catch (error) {
-  // requireAdmin ya redirige automáticamente si no es admin
   console.error('Acceso denegado:', error);
 }
 
-// Navegación
 const productsCard = document.getElementById('productsCard');
 const ordersCard = document.getElementById('ordersCard');
 const usersCard = document.getElementById('usersCard');
@@ -35,7 +30,7 @@ if (ordersCard) {
 
 if (usersCard) {
   usersCard.addEventListener('click', () => {
-    window.location.href = '/src/pages/admin/adminDashboard/dashboard.html?tab=users';
+    window.location.href = '/src/pages/admin/users/users.html';
   });
 }
 

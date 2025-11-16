@@ -2,6 +2,10 @@ export function navigateToPage(path: string): void {
   window.location.href = path;
 }
 
+export function navigateTo(path: string): void {
+  window.location.href = path;
+}
+
 export function navigateToLogin(): void {
   navigateToPage('/src/pages/auth/login/login.html');
 }

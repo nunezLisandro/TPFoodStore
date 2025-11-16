@@ -144,3 +144,30 @@ export async function updateOrderStatus(id: number, estado: string) {
     body: JSON.stringify({ estado }),
   });
 }
+
+// ========== USUARIOS ==========
+export async function apiGet(endpoint: string) {
+  return apiRequest(endpoint, {
+    method: 'GET',
+  });
+}
+
+export async function apiPost(endpoint: string, data: any) {
+  return apiRequest(endpoint, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function apiPut(endpoint: string, data: any) {
+  return apiRequest(endpoint, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function apiDelete(endpoint: string) {
+  return apiRequest(endpoint, {
+    method: 'DELETE',
+  });
+}
