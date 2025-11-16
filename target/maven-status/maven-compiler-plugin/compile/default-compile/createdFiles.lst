@@ -16,7 +16,9 @@ com\example\foodstore\service\ProductService.class
 com\example\foodstore\controller\StockUpdateRequest.class
 com\example\foodstore\repository\ProductRepository.class
 com\example\foodstore\model\Product.class
+com\example\foodstore\controller\UserController.class
 com\example\foodstore\model\PedidoItem.class
+com\example\foodstore\controller\UserController$RoleUpdateRequest.class
 com\example\foodstore\controller\AuthController.class
 com\example\foodstore\config\SecurityConfig.class
 com\example\foodstore\service\UserService.class

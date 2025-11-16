@@ -82,10 +82,29 @@ public class PedidoService {
         Pedido pedido = pedidoRepository.findById(pedidoId)
             .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
         
-        Pedido.Status status = Pedido.Status.fromString(statusStr);
-        pedido.setStatus(status);
+        Pedido.Status oldStatus = pedido.getStatus();
+        Pedido.Status newStatus = Pedido.Status.fromString(statusStr);
+        if (newStatus == Pedido.Status.CANCELLED && oldStatus != Pedido.Status.CANCELLED) {
+            restoreStockFromCancelledOrder(pedido);
+        }
+        
+        pedido.setStatus(newStatus);
         
         return pedidoRepository.save(pedido);
+    }
+    
+    private void restoreStockFromCancelledOrder(Pedido pedido) {
+        for (PedidoItem item : pedido.getOrderItems()) {
+            Product product = productRepository.findById(item.getProductId())
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado: " + item.getProductId()));
+            int newStock = product.getStock() + item.getQuantity();
+            product.setStock(newStock);
+            
+            productRepository.save(product);
+            
+            System.out.println("🔄 Stock restaurado para producto " + product.getNombre() + 
+                             ": +" + item.getQuantity() + " unidades (nuevo stock: " + newStock + ")");
+        }
     }
 
     public boolean deleteById(Long id) {
